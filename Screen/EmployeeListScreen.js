@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import CardView from 'react-native-cardview'
 
 //Import all required component
 import {
@@ -15,7 +16,7 @@ import {
 import AsyncStorage from '@react-native-community/async-storage';
 import Loader from './Components/loader';
 
-const LoginScreen = props => {
+const EmployeeListScreen = props => {
   let [userEmail, setUserEmail] = useState('');
   let [userPassword, setUserPassword] = useState('');
   let [loading, setLoading] = useState(false);
@@ -70,14 +71,18 @@ const LoginScreen = props => {
       });
   };
 
-  return (
-    <View style={styles.mainBody}>
-      <Loader loading={loading} />
-      <ScrollView keyboardShouldPersistTaps="handled">
-        <View style={{ marginTop: 100 }}>
-          <KeyboardAvoidingView enabled>
-            <View style={{ alignItems: 'center' }}>
-              <Image
+
+  const fuck = () => {
+    return (
+      <CardView
+          cardElevation={5}
+          cardMaxElevation={5}
+          cornerRadius={12}
+          margin={10}
+          paddingLeft={10}
+          paddingRight={10}
+          paddingVertical={20}>
+                    <Image
                 source={require('../Image/aboutreact.png')}
                 style={{
                   width: '50%',
@@ -86,68 +91,37 @@ const LoginScreen = props => {
                   margin: 30,
                 }}
               />
+          <Text>
+              Name: Shubham Goel
+          </Text>
+          <Text>
+              Skills: JAVA, Ruby
+          </Text>
+          <Text>
+              Age: 22
+          </Text>
+          <Text>
+              Phone: 9999999999
+          </Text>
+</CardView>
+    )
+  }
+
+  return (
+    <View style={styles.mainBody}>
+      <Loader loading={loading} />
+      <ScrollView keyboardShouldPersistTaps="handled">
+        <View style={{ marginTop: 100 }}>
+              {fuck()}
+              {fuck()}
+              {fuck()}
+              {fuck()}
             </View>
-            <View style={styles.SectionStyle}>
-              <TextInput
-                style={styles.inputStyle}
-                onChangeText={UserEmail => setUserEmail(UserEmail)}
-                underlineColorAndroid="#FFFFFF"
-                placeholder="Enter Email" //dummy@abc.com
-                placeholderTextColor="#F6F6F7"
-                autoCapitalize="none"
-                keyboardType="email-address"
-                ref={ref => {
-                  this._emailinput = ref;
-                }}
-                returnKeyType="next"
-                onSubmitEditing={() =>
-                  this._passwordinput && this._passwordinput.focus()
-                }
-                blurOnSubmit={false}
-              />
+            </ScrollView>
             </View>
-            <View style={styles.SectionStyle}>
-              <TextInput
-                style={styles.inputStyle}
-                onChangeText={UserPassword => setUserPassword(UserPassword)}
-                underlineColorAndroid="#FFFFFF"
-                placeholder="Enter Password" //12345
-                placeholderTextColor="#F6F6F7"
-                keyboardType="default"
-                ref={ref => {
-                  this._passwordinput = ref;
-                }}
-                onSubmitEditing={Keyboard.dismiss}
-                blurOnSubmit={false}
-                secureTextEntry={true}
-              />
-            </View>
-            {errortext != '' ? (
-              <Text style={styles.errorTextStyle}> {errortext} </Text>
-            ) : null}
-            <TouchableOpacity
-              style={styles.buttonStyle}
-              activeOpacity={0.5}
-              onPress={handleSubmitPress}>
-              <Text style={styles.buttonTextStyle}>LOGIN</Text>
-            </TouchableOpacity>
-            <Text
-              style={styles.registerTextStyle}
-              onPress={() => props.navigation.navigate('RegisterScreen')}>
-              New Here ? Register
-            </Text>
-            <Text
-              style={styles.registerTextStyle}
-              onPress={() => props.navigation.navigate('EmployeeListScreen')}>
-              New Here ? List
-            </Text>
-          </KeyboardAvoidingView>
-        </View>
-      </ScrollView>
-    </View>
   );
 };
-export default LoginScreen;
+export default EmployeeListScreen;
 
 const styles = StyleSheet.create({
   mainBody: {

@@ -12,9 +12,13 @@
   "dependencies": {
     "@react-native-community/async-storage": "^1.12.1",
     "@react-native-community/masked-view": "^0.1.10",
+    "axios": "^0.21.0",
+    "base-64": "^1.0.0",
+    "lodash": "^4.17.20",
     "react": "16.13.1",
     "react-native": "0.63.3",
     "react-native-cardview": "^2.0.5",
+    "react-native-dropdown-picker": "^3.7.1",
     "react-native-gesture-handler": "^1.8.0",
     "react-native-reanimated": "^1.13.1",
     "react-native-safe-area-context": "^3.1.8",

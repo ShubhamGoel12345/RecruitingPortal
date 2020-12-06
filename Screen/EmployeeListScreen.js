@@ -71,9 +71,22 @@ const EmployeeListScreen = props => {
       });
   };
 
+  const click = () => {
+    props.navigation.navigate(
+      'EmployeeProfileScreen', {
+        firstName: 'shubham',
+        lastName: 'goel',
+        emailAddress: 'shubhamgoel@gmail.com',
+        mobileNumber: '1234ss567890',
+        skills: ['java', 'ruby']
+      }
+    )
+  }
 
   const fuck = () => {
     return (
+      <TouchableOpacity
+      onPress={click}>
       <CardView
           cardElevation={5}
           cardMaxElevation={5}
@@ -81,6 +94,7 @@ const EmployeeListScreen = props => {
           margin={10}
           paddingLeft={10}
           paddingRight={10}
+          onBlur={click}
           paddingVertical={20}>
                     <Image
                 source={require('../Image/aboutreact.png')}
@@ -104,6 +118,7 @@ const EmployeeListScreen = props => {
               Phone: 9999999999
           </Text>
 </CardView>
+</TouchableOpacity  >
     )
   }
 

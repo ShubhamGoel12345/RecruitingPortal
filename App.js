@@ -18,8 +18,8 @@ import SplashScreen from './Screen/SplashScreen';
 import LoginScreen from './Screen/LoginScreen';
 import RegisterScreen from './Screen/RegisterScreen';
 import DrawerNavigationRoutes from './Screen/DrawerNavigationRoutes';
-import EmployeeList from './Screen/DrawerNavigationRoutes';
 import EmployeeListScreen from './Screen/EmployeeListScreen';
+import EmployeeProfileScreen from './Screen/EmployeeProfileScreen';
 
 const Auth = createStackNavigator({
   //Stack Navigator for Login and Sign up Screen
@@ -45,6 +45,12 @@ const Auth = createStackNavigator({
       headerShown: false,
     },
   },
+  EmployeeProfileScreen: {
+    screen: EmployeeProfileScreen,
+    navigationOptions: {
+      headerShown: false,
+    },
+  }
 });
 
 /* Switch Navigator for those screens which needs to be switched only once

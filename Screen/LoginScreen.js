@@ -11,7 +11,6 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
 } from "react-native";
-import AsyncStorage from "@react-native-community/async-storage";
 import Loader from "./Components/loader";
 
 import { Requests } from "../utils/request";
@@ -23,6 +22,7 @@ const LoginScreen = (props) => {
   let [errortext, setErrortext] = useState("");
 
   const handleSubmitPress = () => {
+    setLoading(true);
     setErrortext("");
     if (!userEmail) {
       alert("Please fill Email");
@@ -33,17 +33,16 @@ const LoginScreen = (props) => {
       return;
     }
     // auth = {
-    //   username: "manujindaal@gmail.com",
+    //   username: "manujindal@gmail.com",
     //   password: "qwerty1234ss",
     // };
     auth = {
-      usename: userEmail,
-      password: userPassword 
-    }
-    // console.log("Basic " + btoa(userEmail + ":" + userPassword))
-    // AsyncStorage.setItem('token', "Basic " + btoa(userEmail + ":" + userPassword));
+      username: userEmail,
+      password: userPassword
+    };
     Requests.get("/signin", {}, auth)
       .then((res) => {
+        console.log("resrresres", res)
         setLoading(false);
         if (res.status == 200) {
           props.navigation.navigate("DrawerNavigationRoutes");
@@ -66,24 +65,20 @@ const LoginScreen = (props) => {
       <ScrollView keyboardShouldPersistTaps="handled">
         <View style={{ marginTop: 100 }}>
           <KeyboardAvoidingView enabled>
-            <View style={{ alignItems: "center" }}>
-              <Image
-                source={require("../Image/aboutreact.png")}
-                style={{
-                  width: "50%",
-                  height: 100,
-                  resizeMode: "contain",
-                  margin: 30,
-                }}
-              />
+            <View style={{ marginLeft: 35, marginTop: 20 }}>
+              <Text style={styles.titleText}>
+                {"Recruiting"} 
+                {"\n"}
+                {"Portal"}
+              </Text>
             </View>
             <View style={styles.SectionStyle}>
               <TextInput
                 style={styles.inputStyle}
                 onChangeText={(UserEmail) => setUserEmail(UserEmail)}
                 underlineColorAndroid="#FFFFFF"
-                placeholder="Enter Email" //dummy@abc.com
-                placeholderTextColor="#F6F6F7"
+                placeholder="Enter Email"
+                placeholderTextColor="#797979"
                 autoCapitalize="none"
                 keyboardType="email-address"
                 returnKeyType="next"
@@ -99,7 +94,7 @@ const LoginScreen = (props) => {
                 onChangeText={(UserPassword) => setUserPassword(UserPassword)}
                 underlineColorAndroid="#FFFFFF"
                 placeholder="Enter Password" //12345
-                placeholderTextColor="#F6F6F7"
+                placeholderTextColor="#797979"
                 keyboardType="default"
                 onSubmitEditing={Keyboard.dismiss}
                 blurOnSubmit={false}
@@ -140,27 +135,31 @@ const styles = StyleSheet.create({
   mainBody: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: "#307ecc",
+    backgroundColor: "#fff",
+  },
+  titleText: {
+    fontSize: 50,
+    color: "#5c5c5c",
   },
   SectionStyle: {
     flexDirection: "row",
     height: 40,
-    marginTop: 20,
+    marginTop: 30,
     marginLeft: 35,
     marginRight: 35,
     margin: 10,
   },
   buttonStyle: {
-    backgroundColor: "#7DE24E",
+    backgroundColor: "#2441d2",
     borderWidth: 0,
     color: "#FFFFFF",
     borderColor: "#7DE24E",
-    height: 40,
+    height: 50,
     alignItems: "center",
-    borderRadius: 30,
+    borderRadius: 5,
     marginLeft: 35,
     marginRight: 35,
-    marginTop: 20,
+    marginTop: 50,
     marginBottom: 20,
   },
   buttonTextStyle: {
@@ -170,21 +169,25 @@ const styles = StyleSheet.create({
   },
   inputStyle: {
     flex: 1,
-    color: "white",
+    color: "gray",
     paddingLeft: 15,
     paddingRight: 15,
     borderWidth: 1,
-    borderRadius: 30,
-    borderColor: "white",
+    borderRadius: 5,
+    backgroundColor: "#fff",
+    height: 60,
+    borderColor: 'gray',
+    borderWidth: 1
   },
   registerTextStyle: {
-    color: "#FFFFFF",
+    color: "#3964e5",
     textAlign: "center",
-    fontWeight: "bold",
     fontSize: 14,
   },
   errorTextStyle: {
     color: "red",
+    marginTop: 20,
+    fontWeight: "bold",
     textAlign: "center",
     fontSize: 14,
   },

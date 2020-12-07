@@ -36,7 +36,7 @@ export const RegistrationModalRecord = {
       key: "type",
       name: "Type",
       type: "select",
-      isRequired: false,
+      isRequired: true,
       dropDownList: [
         { label: 'Employee', value: 'Employee'},
         { label: 'Employer', value: 'Employer'},
@@ -46,7 +46,7 @@ export const RegistrationModalRecord = {
       key: "skills",
       name: "Skills",
       type: "multi-select",
-      isRequired: false,
+      isRequired: true,
       dropDownList: [
         { label: 'JAVA', value: 'java'},
         { label: 'PYTHON', value: 'python'},

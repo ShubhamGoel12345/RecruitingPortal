@@ -7,6 +7,12 @@ import {
 } from "react-native";
 import DropDownPicker from 'react-native-dropdown-picker';
 
+export function getLabel(field){
+  return (
+    field.name + (field.isRequired ? " *" : "")
+  )
+}
+
 export const createField = (field, onChange) => {
 
   const fieldKey = JSON.stringify(field)
@@ -18,8 +24,8 @@ export const createField = (field, onChange) => {
             style={styles.inputStyle}
             onChangeText={UserName => onChange(field.key, UserName)}
             underlineColorAndroid="#FFFFFF"
-            placeholder={`Enter  ${field.name}`}
-            placeholderTextColor="#F6F6F7"
+            placeholder={`Enter ${getLabel(field)}`}
+            placeholderTextColor="#797979"
             autoCapitalize="sentences"
             returnKeyType="next"
             onSubmitEditing={() => { }}
@@ -34,9 +40,8 @@ export const createField = (field, onChange) => {
           <DropDownPicker
             items={field.dropDownList}
             multiple={false}
-            style={{ backgroundColor: '#fafafa' }}
-            placeholder="Select"
-            containerStyle={{ width: 300, height: 40 }}
+            placeholder={`Select ${getLabel(field)}`}
+            containerStyle={{ flex: 1, height: 45 }}
             itemStyle={{
               justifyContent: 'flex-start'
             }}
@@ -51,11 +56,12 @@ export const createField = (field, onChange) => {
           <DropDownPicker
             items={field.dropDownList}
             multiple={true}
+            placeholder={`Select ${getLabel(field)}`}
             multipleText="%d items have been selected."
             defaultValue={[]}
             min={0}
             max={10}
-            containerStyle={{ width: 300, height: 40 }}
+            containerStyle={{ flex: 1, height: 45 }}
             itemStyle={{
               justifyContent: 'flex-start'
             }}
@@ -78,42 +84,16 @@ export const styles = StyleSheet.create({
     marginRight: 35,
     margin: 10,
   },
-  buttonStyle: {
-    backgroundColor: "#7DE24E",
-    borderWidth: 0,
-    color: "#FFFFFF",
-    borderColor: "#7DE24E",
-    height: 40,
-    alignItems: "center",
-    borderRadius: 30,
-    marginLeft: 35,
-    marginRight: 35,
-    marginTop: 20,
-    marginBottom: 20,
-  },
-  buttonTextStyle: {
-    color: "#FFFFFF",
-    paddingVertical: 10,
-    fontSize: 16,
-  },
   inputStyle: {
     flex: 1,
-    color: "white",
+    color: "gray",
     paddingLeft: 15,
     paddingRight: 15,
     borderWidth: 1,
-    borderRadius: 30,
-    borderColor: "white",
-  },
-  errorTextStyle: {
-    color: "red",
-    textAlign: "center",
-    fontSize: 14,
-  },
-  successTextStyle: {
-    color: "white",
-    textAlign: "center",
-    fontSize: 18,
-    padding: 30,
+    borderRadius: 5,
+    backgroundColor: "#fff",
+    height: 45,
+    borderColor: '#d8d8d8',
+    borderWidth: 1
   },
 });

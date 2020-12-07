@@ -27,23 +27,17 @@ const RegisterScreen = (props) => {
 
   const onChange = (key, data) => {
     let payload = Object.assign({}, userPayload);
-    console.log("okoko", payload);
     payload[key] = {
       value: data,
     };
     setUserPayload(payload);
-    console.log(key);
-    console.log(data);
   };
 
   const validateForm = () => {
     let anyError = false
-    console.log(userPayload)
     RegistrationModalRecord.fields.forEach((field) => {
       if (field.isRequired && (userPayload[field.key]?.value === undefined || userPayload[field.key]?.value === null)) {
-        alert("Please fill " + field.name);
         anyError = true
-        return false
       }
     });
     return anyError
@@ -51,6 +45,8 @@ const RegisterScreen = (props) => {
 
   const handleSubmitButton = () => {
     if (validateForm()) {
+      alert("Please fill required field");
+      console.log("invalid form")
       return
     }
     const payload = _.mapValues(userPayload, (v) => v && v.value);
@@ -78,15 +74,10 @@ const RegisterScreen = (props) => {
       <View
         style={{
           flex: 1,
-          backgroundColor: "#307ecc",
-          justifyContent: "center",
+          backgroundColor: "#fff",
         }}
       >
-        <Image
-          source={require("../Image/success.png")}
-          style={{ height: 150, resizeMode: "contain", alignSelf: "center" }}
-        />
-        <Text style={styles.successTextStyle}>Registration Successful.</Text>
+        <Text style={styles.successTextStyle}>{"Registration"} {"\n"}{"Successful"}</Text>
         <TouchableOpacity
           style={styles.buttonStyle}
           activeOpacity={0.5}
@@ -98,19 +89,11 @@ const RegisterScreen = (props) => {
     );
   }
   return (
-    <View style={{ flex: 1, backgroundColor: "#307ecc" }}>
+    <View style={{ flex: 1, backgroundColor: "#fff" }}>
       <Loader loading={loading} />
       <ScrollView keyboardShouldPersistTaps="handled">
-        <View style={{ alignItems: "center" }}>
-          <Image
-            source={require("../Image/aboutreact.png")}
-            style={{
-              width: "50%",
-              height: 100,
-              resizeMode: "contain",
-              margin: 30,
-            }}
-          />
+        <View style={{ alignItems: "center", marginTop: 40 }}>
+        {/* <Text style={styles.formTextStyle}>{"Sign Up"}</Text> */}
         </View>
         <KeyboardAvoidingView enabled>
           {RegistrationModalRecord.fields.map((field) =>
@@ -143,16 +126,16 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   buttonStyle: {
-    backgroundColor: "#7DE24E",
+    backgroundColor: "#2441d2",
     borderWidth: 0,
     color: "#FFFFFF",
     borderColor: "#7DE24E",
-    height: 40,
+    height: 60,
     alignItems: "center",
-    borderRadius: 30,
+    borderRadius: 5,
     marginLeft: 35,
     marginRight: 35,
-    marginTop: 20,
+    marginTop: 40,
     marginBottom: 20,
   },
   buttonTextStyle: {
@@ -175,9 +158,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   successTextStyle: {
-    color: "white",
-    textAlign: "center",
-    fontSize: 18,
-    padding: 30,
+    marginTop: 120,
+    marginBottom: 50,
+    marginLeft: 20,
+    fontSize: 60,
+    color: "#5c5c5c",
   },
 });

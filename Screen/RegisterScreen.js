@@ -1,13 +1,8 @@
-/* This is an Login Registration example from https://aboutreact.com/ */
-/* https://aboutreact.com/react-native-login-and-signup/ */
-
-//Import React and Hook we needed
 import React, { useState } from "react";
 import { Requests } from "../utils/request";
 
 import _ from "lodash";
 
-//Import all required component
 import {
   StyleSheet,
   TextInput,
@@ -22,18 +17,6 @@ import {
 import { createField } from "./Components/formField";
 import { RegistrationModalRecord } from "./registrationRecordType";
 import Loader from "./Components/loader";
-
-import { DestructurePayload } from "../utils/commonUtil";
-
-// {
-//   "firstName": "Manu",
-//   "lastName": "Jindal",
-//   "emailAddress": "manujindal@gmail.com",
-//   "password": "qwerty1234ss",
-//   "mobileNumber": "9034340299",
-//   "type": "Employee",
-//   "skills": ["java", "ruby"]
-// }
 
 const RegisterScreen = (props) => {
   let [loading, setLoading] = useState(false);
@@ -63,7 +46,6 @@ const RegisterScreen = (props) => {
         return false
       }
     });
-    console.log("anyError", anyError)
     return anyError
   }
 
@@ -71,18 +53,12 @@ const RegisterScreen = (props) => {
     if (validateForm()) {
       return
     }
-    // console.log(userPayload);
-
     const payload = _.mapValues(userPayload, (v) => v && v.value);
-
-    // console.log(payload);
-
-
     setErrortext("");
     setLoading(true);
     Requests.post("/users", payload)
       .then((res) => {
-        console.log(responseJson);
+        console.log(res);
         setLoading(false);
         if (res.status === 200) {
           setIsRegistraionSuccess(true);
@@ -92,7 +68,6 @@ const RegisterScreen = (props) => {
         }
       })
       .catch((error) => {
-        // Hide Loader
         setLoading(false);
         console.error(error);
       });
@@ -139,7 +114,7 @@ const RegisterScreen = (props) => {
         </View>
         <KeyboardAvoidingView enabled>
           {RegistrationModalRecord.fields.map((field) =>
-            createField(field, userPayload, onChange)
+            createField(field, onChange)
           )}
           {errortext != "" ? (
             <Text style={styles.errorTextStyle}> {errortext} </Text>

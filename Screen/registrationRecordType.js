@@ -3,7 +3,7 @@ export const RegistrationModalRecord = {
   name: "Registration screen",
   fields: [
     {
-      key: "Firstame",
+      key: "firstName",
       name: "First name",
       type: "text-box",
       isRequired: true
@@ -32,27 +32,27 @@ export const RegistrationModalRecord = {
       type: "text-box",
       isRequired: true
     },
-    // {
-    //   key: "type",
-    //   name: "Type",
-    //   type: "select",
-    //   isRequired: false,
-    //   dropDownList: [
-    //     { label: 'Employee', value: 'Employee'},
-    //     { label: 'Employer', value: 'Employer'},userPayload
-    //   ]
-    // },
-    // {
-    //   key: "skills",
-    //   name: "Skills",
-    //   type: "select",
-    //   isRequired: false,
-    //   dropDownList: [
-    //     { label: 'JAVA', value: 'java'},
-    //     { label: 'PYTHON', value: 'python'},
-    //     { label: 'C++', value: 'cpp'},
-    //     { label: 'RUBY', value: 'ruby'},
-    //   ]
-    // },
+    {
+      key: "type",
+      name: "Type",
+      type: "select",
+      isRequired: false,
+      dropDownList: [
+        { label: 'Employee', value: 'Employee'},
+        { label: 'Employer', value: 'Employer'},
+      ]
+    },
+    {
+      key: "skills",
+      name: "Skills",
+      type: "multi-select",
+      isRequired: false,
+      dropDownList: [
+        { label: 'JAVA', value: 'java'},
+        { label: 'PYTHON', value: 'python'},
+        { label: 'C++', value: 'cpp'},
+        { label: 'RUBY', value: 'ruby'},
+      ]
+    },
   ],
 };

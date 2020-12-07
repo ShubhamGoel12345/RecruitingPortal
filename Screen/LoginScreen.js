@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 
-//Import all required component
 import {
   StyleSheet,
   TextInput,
@@ -33,16 +32,20 @@ const LoginScreen = (props) => {
       alert("Please fill Password");
       return;
     }
+    // auth = {
+    //   username: "manujindaal@gmail.com",
+    //   password: "qwerty1234ss",
+    // };
     auth = {
-      username: "manujindaal@gmail.com",
-      password: "qwerty1234ss",
-    };
+      usename: userEmail,
+      password: userPassword 
+    }
+    // console.log("Basic " + btoa(userEmail + ":" + userPassword))
+    // AsyncStorage.setItem('token', "Basic " + btoa(userEmail + ":" + userPassword));
     Requests.get("/signin", {}, auth)
       .then((res) => {
         setLoading(false);
         if (res.status == 200) {
-          // AsyncStorage.setItem('user_id', responseJson.data[0].user_id);
-          // console.log(responseJson.data[0].user_id);
           props.navigation.navigate("DrawerNavigationRoutes");
         } else {
           setErrortext("Please check your email id or password");

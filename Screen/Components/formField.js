@@ -7,13 +7,13 @@ import {
 } from "react-native";
 import DropDownPicker from 'react-native-dropdown-picker';
 
-export const createField = (field, defaultValue, onChange) => {
+export const createField = (field, onChange) => {
 
-  console.log(defaultValue)
+  const fieldKey = JSON.stringify(field)
   switch (field.type) {
     case "text-box":
       return (
-        <View style={styles.SectionStyle}>
+        <View key={fieldKey} style={styles.SectionStyle}>
           <TextInput
             style={styles.inputStyle}
             onChangeText={UserName => onChange(field.key, UserName)}
@@ -30,12 +30,12 @@ export const createField = (field, defaultValue, onChange) => {
       )
     case "select":
       return (
-        <View style={styles.SectionStyle}>
+        <View key={fieldKey} style={styles.SectionStyle}>
           <DropDownPicker
             items={field.dropDownList}
-            multiple={true}
+            multiple={false}
             style={{ backgroundColor: '#fafafa' }}
-            defaultValue={defaultValue[field.key]?.value}
+            placeholder="Select"
             containerStyle={{ width: 300, height: 40 }}
             itemStyle={{
               justifyContent: 'flex-start'
@@ -47,15 +47,15 @@ export const createField = (field, defaultValue, onChange) => {
       )
     case "multi-select":
       return (
-        <View style={styles.SectionStyle}>
+        <View key={fieldKey} style={styles.SectionStyle}>
           <DropDownPicker
             items={field.dropDownList}
             multiple={true}
             multipleText="%d items have been selected."
+            defaultValue={[]}
             min={0}
             max={10}
-            // defaultValue={[{label: 'UK', value: 'uk'}]}
-            containerStyle={{ height: 40 }}
+            containerStyle={{ width: 300, height: 40 }}
             itemStyle={{
               justifyContent: 'flex-start'
             }}

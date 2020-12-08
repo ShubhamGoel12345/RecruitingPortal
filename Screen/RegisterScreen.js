@@ -1,10 +1,8 @@
-/* This is an Login Registration example from https://aboutreact.com/ */
-/* https://aboutreact.com/react-native-login-and-signup/ */
+import React, { useState } from "react";
+import { Requests } from "../utils/request";
 
-//Import React and Hook we needed
-import React, { useState } from 'react';
+import _ from "lodash";
 
-//Import all required component
 import {
   StyleSheet,
   TextInput,
@@ -15,188 +13,100 @@ import {
   Keyboard,
   TouchableOpacity,
   ScrollView,
-} from 'react-native';
-import Loader from './Components/loader';
+} from "react-native";
+import { createField } from "./Components/formField";
+import { RegistrationModalRecord } from "./registrationRecordType";
+import Loader from "./Components/loader";
 
-const RegisterScreen = props => {
-  let [userName, setUserName] = useState('');
-  let [userEmail, setUserEmail] = useState('');
-  let [userMobile, setUserMobile] = useState('');
-  let [userPassword, setUserPassword] = useState('');
+const RegisterScreen = (props) => {
   let [loading, setLoading] = useState(false);
-  let [errortext, setErrortext] = useState('');
+  let [errortext, setErrortext] = useState("");
   let [isRegistraionSuccess, setIsRegistraionSuccess] = useState(false);
 
-  const handleSubmitButton = () => {
-    setErrortext('');
-    if (!userName) {
-      alert('Please fill Name');
-      return;
-    }
-    if (!userEmail) {
-      alert('Please fill Email');
-      return;
-    }
-    if (!userMobile) {
-      alert('Please fill Age');
-      return;
-    }
-    if (!userPassword) {
-      alert('Please fill Address');
-      return;
-    }
-    //Show Loader
-    setLoading(true);
-    var dataToSend = {
-      user_name: userName,
-      user_email: userEmail,
-      user_mobile: userMobile,
-      user_password: userPassword,
-    };
-    var formBody = [];
-    for (var key in dataToSend) {
-      var encodedKey = encodeURIComponent(key);
-      var encodedValue = encodeURIComponent(dataToSend[key]);
-      formBody.push(encodedKey + '=' + encodedValue);
-    }
-    formBody = formBody.join('&');
+  let [userPayload, setUserPayload] = useState({});
 
-    fetch('http://localhost:3000/signup', {
-      method: 'POST',
-      body: formBody,
-      headers: {
-        //Header Defination
-        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-      },
-    })
-      .then(response => response.json())
-      .then(responseJson => {
-        //Hide Loader
+  const onChange = (key, data) => {
+    let payload = Object.assign({}, userPayload);
+    payload[key] = {
+      value: data,
+    };
+    setUserPayload(payload);
+  };
+
+  const validateForm = () => {
+    let anyError = false
+    RegistrationModalRecord.fields.forEach((field) => {
+      if (field.isRequired && (userPayload[field.key]?.value === undefined || userPayload[field.key]?.value === null)) {
+        anyError = true
+      }
+    });
+    return anyError
+  }
+
+  const handleSubmitButton = () => {
+    if (validateForm()) {
+      alert("Please fill required field");
+      console.log("invalid form")
+      return
+    }
+    const payload = _.mapValues(userPayload, (v) => v && v.value);
+    setErrortext("");
+    setLoading(true);
+    Requests.post("/users", payload)
+      .then((res) => {
+        console.log(res);
         setLoading(false);
-        console.log(responseJson);
-        // If server response message same as Data Matched
-        if (responseJson.status == 1) {
+        if (res.status === 200) {
           setIsRegistraionSuccess(true);
-          console.log('Registration Successful. Please Login to proceed');
+          console.log("Registration Successful. Please Login to proceed");
         } else {
-          setErrortext('Registration Unsuccessful');
+          setErrortext("Registration Unsuccessful");
         }
       })
-      .catch(error => {
-        //Hide Loader
+      .catch((error) => {
         setLoading(false);
         console.error(error);
       });
   };
+
   if (isRegistraionSuccess) {
     return (
       <View
         style={{
           flex: 1,
-          backgroundColor: '#307ecc',
-          justifyContent: 'center',
-        }}>
-        <Image
-          source={require('../Image/success.png')}
-          style={{ height: 150, resizeMode: 'contain', alignSelf: 'center' }}
-        />
-        <Text style={styles.successTextStyle}>Registration Successful.</Text>
+          backgroundColor: "#fff",
+        }}
+      >
+        <Text style={styles.successTextStyle}>{"Registration"} {"\n"}{"Successful"}</Text>
         <TouchableOpacity
           style={styles.buttonStyle}
           activeOpacity={0.5}
-          onPress={() => props.navigation.navigate('LoginScreen')}>
+          onPress={() => props.navigation.navigate("LoginScreen")}
+        >
           <Text style={styles.buttonTextStyle}>Login Now</Text>
         </TouchableOpacity>
       </View>
     );
   }
   return (
-    <View style={{ flex: 1, backgroundColor: '#307ecc' }}>
+    <View style={{ flex: 1, backgroundColor: "#fff" }}>
       <Loader loading={loading} />
       <ScrollView keyboardShouldPersistTaps="handled">
-        <View style={{ alignItems: 'center' }}>
-          <Image
-            source={require('../Image/aboutreact.png')}
-            style={{
-              width: '50%',
-              height: 100,
-              resizeMode: 'contain',
-              margin: 30,
-            }}
-          />
+        <View style={{ alignItems: "center", marginTop: 40 }}>
+        {/* <Text style={styles.formTextStyle}>{"Sign Up"}</Text> */}
         </View>
         <KeyboardAvoidingView enabled>
-          <View style={styles.SectionStyle}>
-            <TextInput
-              style={styles.inputStyle}
-              onChangeText={UserName => setUserName(UserName)}
-              underlineColorAndroid="#FFFFFF"
-              placeholder="Enter Name"
-              placeholderTextColor="#F6F6F7"
-              autoCapitalize="sentences"
-              returnKeyType="next"
-              onSubmitEditing={() =>
-                this._emailinput && this._emailinput.focus()
-              }
-              blurOnSubmit={false}
-            />
-          </View>
-          <View style={styles.SectionStyle}>
-            <TextInput
-              style={styles.inputStyle}
-              onChangeText={UserEmail => setUserEmail(UserEmail)}
-              underlineColorAndroid="#F6F6F7"
-              placeholder="Enter Email"
-              placeholderTextColor="#F6F6F7"
-              keyboardType="email-address"
-              ref={ref => {
-                this._emailinput = ref;
-              }}
-              returnKeyType="next"
-              onSubmitEditing={() => this._ageinput && this._ageinput.focus()}
-              blurOnSubmit={false}
-            />
-          </View>
-          <View style={styles.SectionStyle}>
-            <TextInput
-              style={styles.inputStyle}
-              onChangeText={UserMobile => setUserMobile(UserMobile)}
-              underlineColorAndroid="#F6F6F7"
-              placeholder="Enter Mobile"
-              placeholderTextColor="#F6F6F7"
-              keyboardType="numeric"
-              ref={ref => {
-                this._ageinput = ref;
-              }}
-              onSubmitEditing={() =>
-                this._addressinput && this._addressinput.focus()
-              }
-              blurOnSubmit={false}
-            />
-          </View>
-          <View style={styles.SectionStyle}>
-            <TextInput
-              style={styles.inputStyle}
-              onChangeText={UserPassword => setUserPassword(UserPassword)}
-              underlineColorAndroid="#FFFFFF"
-              placeholder="Enter Password"
-              placeholderTextColor="#F6F6F7"
-              autoCapitalize="sentences"
-              ref={ref => {
-                this._addressinput = ref;
-              }}
-              returnKeyType="next"
-              onSubmitEditing={Keyboard.dismiss}
-              blurOnSubmit={false}
-            />
-          </View>
-          {errortext != '' ? (
+          {RegistrationModalRecord.fields.map((field) =>
+            createField(field, onChange)
+          )}
+          {errortext != "" ? (
             <Text style={styles.errorTextStyle}> {errortext} </Text>
           ) : null}
           <TouchableOpacity
             style={styles.buttonStyle}
             activeOpacity={0.5}
-            onPress={handleSubmitButton}>
+            onPress={handleSubmitButton}
+          >
             <Text style={styles.buttonTextStyle}>REGISTER</Text>
           </TouchableOpacity>
         </KeyboardAvoidingView>
@@ -208,7 +118,7 @@ export default RegisterScreen;
 
 const styles = StyleSheet.create({
   SectionStyle: {
-    flexDirection: 'row',
+    flexDirection: "row",
     height: 40,
     marginTop: 20,
     marginLeft: 35,
@@ -216,41 +126,42 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   buttonStyle: {
-    backgroundColor: '#7DE24E',
+    backgroundColor: "#2441d2",
     borderWidth: 0,
-    color: '#FFFFFF',
-    borderColor: '#7DE24E',
-    height: 40,
-    alignItems: 'center',
-    borderRadius: 30,
+    color: "#FFFFFF",
+    borderColor: "#7DE24E",
+    height: 60,
+    alignItems: "center",
+    borderRadius: 5,
     marginLeft: 35,
     marginRight: 35,
-    marginTop: 20,
+    marginTop: 40,
     marginBottom: 20,
   },
   buttonTextStyle: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     paddingVertical: 10,
     fontSize: 16,
   },
   inputStyle: {
     flex: 1,
-    color: 'white',
+    color: "white",
     paddingLeft: 15,
     paddingRight: 15,
     borderWidth: 1,
     borderRadius: 30,
-    borderColor: 'white',
+    borderColor: "white",
   },
   errorTextStyle: {
-    color: 'red',
-    textAlign: 'center',
+    color: "red",
+    textAlign: "center",
     fontSize: 14,
   },
   successTextStyle: {
-    color: 'white',
-    textAlign: 'center',
-    fontSize: 18,
-    padding: 30,
+    marginTop: 120,
+    marginBottom: 50,
+    marginLeft: 20,
+    fontSize: 60,
+    color: "#5c5c5c",
   },
 });

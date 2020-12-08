@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import AsyncStorage from '@react-native-community/async-storage';
 
 import {
   StyleSheet,
@@ -21,7 +22,7 @@ const LoginScreen = (props) => {
   let [loading, setLoading] = useState(false);
   let [errortext, setErrortext] = useState("");
 
-  const handleSubmitPress = () => {
+  const handleSubmitPress = async () => {
     setLoading(true);
     setErrortext("");
     if (!userEmail) {
@@ -32,28 +33,31 @@ const LoginScreen = (props) => {
       alert("Please fill Password");
       return;
     }
-    // auth = {
-    //   username: "manujindal@gmail.com",
-    //   password: "qwerty1234ss",
-    // };
-    auth = {
+
+    let auth = {
       username: userEmail,
       password: userPassword
     };
+
     Requests.get("/signin", {}, auth)
-      .then((res) => {
-        console.log("resrresres", res)
-        setLoading(false);
-        if (res.status == 200) {
-          props.navigation.navigate("DrawerNavigationRoutes");
+      .then(async (res) => {
+        setLoading(false)
+        let user = res.data.message;
+
+        await AsyncStorage.setItem('token', res.config.headers.Authorization);
+        await AsyncStorage.setItem('userType', user.type_type);
+        await AsyncStorage.setItem('user', JSON.stringify(user));
+
+        if(user.type_type !== 'Employee') {
+          props.navigation.navigate("EmployeeListScreen");
         } else {
-          setErrortext("Please check your email id or password");
-          console.log("Please check your email id or password");
+          props.navigation.navigate("EmployeeProfileScreen", user);
         }
       })
       .catch((error) => {
         //Hide Loader
         setLoading(false);
+        console.log(error);
         setErrortext("Please check your email id or password");
         console.log("Please check your email id or password");
       });
@@ -116,12 +120,6 @@ const LoginScreen = (props) => {
               onPress={() => props.navigation.navigate("RegisterScreen")}
             >
               New Here ? Register
-            </Text>
-            <Text
-              style={styles.registerTextStyle}
-              onPress={() => props.navigation.navigate("EmployeeListScreen")}
-            >
-              New Here ? List
             </Text>
           </KeyboardAvoidingView>
         </View>

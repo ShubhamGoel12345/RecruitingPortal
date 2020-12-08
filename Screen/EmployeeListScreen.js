@@ -15,65 +15,38 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Loader from './Components/loader';
+import { Requests } from "../utils/request";
 
 const EmployeeListScreen = props => {
   let [userEmail, setUserEmail] = useState('');
   let [userPassword, setUserPassword] = useState('');
-  let [loading, setLoading] = useState(false);
+  let [loading, setLoading] = useState(true);
   let [errortext, setErrortext] = useState('');
+  let [data, setData] = useState([]);
 
-  const handleSubmitPress = () => {
-    setErrortext('');
-    if (!userEmail) {
-      alert('Please fill Email');
-      return;
+  Requests.get("/employees", {})
+    .then(async (res) => {
+      setLoading(false);
+      setData(res.data);
+    })
+    .catch((error) => {
+      setLoading(false);
+      console.log(error)
     }
-    if (!userPassword) {
-      alert('Please fill Password');
-      return;
-    }
-    setLoading(true);
-    var dataToSend = { user_email: userEmail, user_password: userPassword };
-    var formBody = [];
-    for (var key in dataToSend) {
-      var encodedKey = encodeURIComponent(key);
-      var encodedValue = encodeURIComponent(dataToSend[key]);
-      formBody.push(encodedKey + '=' + encodedValue);
-    }
-    formBody = formBody.join('&');
+  );
 
-    fetch('https://aboutreact.herokuapp.com/login.php', {
-      method: 'POST',
-      body: formBody,
-      headers: {
-        //Header Defination
-        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-      },
-    }).then(response => response.json())
-      .then(responseJson => {
-        //Hide Loader
-        setLoading(false);
-        console.log(responseJson);
-        // If server response message same as Data Matched
-        if (responseJson.status == 1) {
-          AsyncStorage.setItem('user_id', responseJson.data[0].user_id);
-          console.log(responseJson.data[0].user_id);
-          props.navigation.navigate('DrawerNavigationRoutes');
-        } else {
-          setErrortext('Please check your email id or password');
-          console.log('Please check your email id or password');
-        }
-      })
-      .catch(error => {
-        //Hide Loader
-        setLoading(false);
-        console.error(error);
-      });
-  };
+  const click = (index) => {
+    props.navigation.navigate(
+      'ViewProfileScreen',
+      data[index]
+    )
+  }
 
-
-  const fuck = () => {
+  const cardView = (index) => {
+    if(data[index]) {
     return (
+      <TouchableOpacity
+      onPress={() => { click(index) }}>
       <CardView
           cardElevation={5}
           cardMaxElevation={5}
@@ -92,19 +65,22 @@ const EmployeeListScreen = props => {
                 }}
               />
           <Text>
-              Name: Shubham Goel
+              Name: {data[index].firstName} {data[index].lastName}
           </Text>
           <Text>
-              Skills: JAVA, Ruby
+              Skills: {data[index].skills.join(',')}
           </Text>
           <Text>
-              Age: 22
+              Email: {data[index].emailAddress}
           </Text>
           <Text>
-              Phone: 9999999999
+              Phone: {data[index].mobileNumber}
           </Text>
 </CardView>
-    )
+</TouchableOpacity  >
+    )} else {
+      return;
+    }
   }
 
   return (
@@ -112,10 +88,7 @@ const EmployeeListScreen = props => {
       <Loader loading={loading} />
       <ScrollView keyboardShouldPersistTaps="handled">
         <View style={{ marginTop: 100 }}>
-              {fuck()}
-              {fuck()}
-              {fuck()}
-              {fuck()}
+          {data.map((g, index) => { return cardView(index)})}
             </View>
             </ScrollView>
             </View>

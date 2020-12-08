@@ -2,6 +2,7 @@
 /* https://aboutreact.com/react-native-login-and-signup/ */
 
 //Import React and Hook we needed
+import AsyncStorage from '@react-native-community/async-storage';
 import React, { useState } from 'react';
 
 //Import all required component
@@ -16,28 +17,45 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
+import { Requests } from '../utils/request';
 import Loader from './Components/loader';
 
+let stop = true;
+
 const EmployeeProfileScreen = props => {
-  let data = props.navigation.state.params;
-  let [userFirstName, setUserFirstName] = useState(data.firstName || '');
-  let [userLastName, setUserLastName] = useState(data.lastName || '');
-  let [userEmail, setUserEmail] = useState(data.emailAddress || '');
-  let [userMobile, setUserMobile] = useState(data.mobileNumber || '');
-  let [userSkills, setUserSkills] = useState(data.skils || []);
+  let data = {}
+
+  let [userFirstName, setUserFirstName] = useState(data.first_name || '');
+  let [userLastName, setUserLastName] = useState(data.last_name || '');
+  let [userEmail, setUserEmail] = useState(data.email_address || '');
+  let [userMobile, setUserMobile] = useState(data.mobile_number || '');
+  let [userSkills, setUserSkills] = useState(data.skills || []);
   let [loading, setLoading] = useState(false);
   let [errortext, setErrortext] = useState('');
   let [isUpdateSuccess, setIsRegistraionSuccess] = useState(false);
   let [viewMode, setViewMode] = useState(true);
 
+  if(stop) {
+    AsyncStorage.getItem('user').then((res) => {
+      stop=false;
+      data = JSON.parse(res);
+      setUserFirstName(data.first_name);
+      setUserLastName(data.last_name);
+      setUserEmail(data.email_address);
+      setUserMobile(data.mobile_number);
+      setUserSkills(data.skills);
+    });
+  }
+
   const handleSubmitButton = () => {
     setErrortext('');
+    setLoading(true);
     if (!userFirstName) {
-      alert('Please fill Name');
+      alert('Please fill First Name');
       return;
 		}
 		if (!userLastName) {
-      alert('Please fill Name');
+      alert('Please fill Last Name');
       return;
     }
     if (!userEmail) {
@@ -45,11 +63,28 @@ const EmployeeProfileScreen = props => {
       return;
     }
     if (!userMobile) {
-      alert('Please fill Age');
+      alert('Please fill Mobile Number');
       return;
     }
 
-    toggleViewMode();
+    Requests.put("/employees/id", {
+      firstName: userFirstName,
+      lastName: userLastName
+    })
+    .then(async (res) => { 
+      let user = res.data.message;
+      console.log(user);
+      await AsyncStorage.setItem('user', JSON.stringify(user));
+
+      setLoading(false);
+      setUserFirstName(user.first_name);
+      setUserLastName(user.last_name);
+      toggleViewMode();
+    })
+    .catch(error => { 
+      setLoading(false) 
+      console.log(error)
+    })
   };
 
   const toggleViewMode = () => {
@@ -107,6 +142,15 @@ const EmployeeProfileScreen = props => {
 
               <Text style={styles.viewStyle}>
               {userMobile}
+              </Text>
+            </View>
+            <View style={styles.ViewSectionStyle}>
+            <Text style={styles.viewStyle}>
+              Skills:
+              </Text>
+
+              <Text style={styles.viewStyle}>
+              {userSkills}
               </Text>
             </View>
             {errortext != '' ? (

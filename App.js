@@ -20,6 +20,7 @@ import RegisterScreen from './Screen/RegisterScreen';
 import DrawerNavigationRoutes from './Screen/DrawerNavigationRoutes';
 import EmployeeListScreen from './Screen/EmployeeListScreen';
 import EmployeeProfileScreen from './Screen/EmployeeProfileScreen';
+import ViewProfileScreen from './Screen/ViewProfileScreen';
 
 const Auth = createStackNavigator({
   //Stack Navigator for Login and Sign up Screen
@@ -47,6 +48,12 @@ const Auth = createStackNavigator({
   },
   EmployeeProfileScreen: {
     screen: EmployeeProfileScreen,
+    navigationOptions: {
+      headerShown: false,
+    },
+  },
+  ViewProfileScreen: {
+    screen: ViewProfileScreen,
     navigationOptions: {
       headerShown: false,
     },

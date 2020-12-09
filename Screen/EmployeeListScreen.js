@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import CardView from 'react-native-cardview'
+import CardView from 'react-native-cardview';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 //Import all required component
 import {
@@ -13,12 +14,13 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
 } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
 import Loader from './Components/loader';
 import { Requests } from "../utils/request";
+import { Avatar, Accessory } from 'react-native-elements';
+
 
 const EmployeeListScreen = props => {
-  let [userEmail, setUserEmail] = useState('');
+  let [selectedSkills, setSkills] = useState('');
   let [userPassword, setUserPassword] = useState('');
   let [loading, setLoading] = useState(true);
   let [errortext, setErrortext] = useState('');
@@ -33,7 +35,7 @@ const EmployeeListScreen = props => {
       setLoading(false);
       console.log(error)
     }
-  );
+    );
 
   const click = (index) => {
     props.navigation.navigate(
@@ -43,42 +45,41 @@ const EmployeeListScreen = props => {
   }
 
   const cardView = (index) => {
-    if(data[index]) {
-    return (
-      <TouchableOpacity
-      onPress={() => { click(index) }}>
-      <CardView
-          cardElevation={5}
-          cardMaxElevation={5}
-          cornerRadius={12}
-          margin={10}
-          paddingLeft={10}
-          paddingRight={10}
-          paddingVertical={20}>
-                    <Image
-                source={require('../Image/aboutreact.png')}
-                style={{
-                  width: '50%',
-                  height: 100,
-                  resizeMode: 'contain',
-                  margin: 30,
-                }}
-              />
-          <Text>
+    if (data[index]) {
+      return (
+        <TouchableOpacity key={index}
+          onPress={() => { click(index) }}>
+          <CardView
+            cardElevation={5}
+            cardMaxElevation={5}
+            cornerRadius={12}
+            margin={10}
+            paddingLeft={10}
+            paddingRight={10}
+            paddingVertical={20}>
+            <Avatar containerStyle={{ marginLeft: 10, marginBottom: 10 }}
+              size={100}
+              rounded
+              onPress={() => console.log("Works!")}
+              source={require('../Image/aboutreact.png')}>
+
+            </Avatar>
+            <Text>
               Name: {data[index].firstName} {data[index].lastName}
-          </Text>
-          <Text>
+            </Text>
+            <Text>
               Skills: {data[index].skills.join(',')}
-          </Text>
-          <Text>
+            </Text>
+            <Text>
               Email: {data[index].emailAddress}
-          </Text>
-          <Text>
+            </Text>
+            <Text>
               Phone: {data[index].mobileNumber}
-          </Text>
-</CardView>
-</TouchableOpacity  >
-    )} else {
+            </Text>
+          </CardView>
+        </TouchableOpacity  >
+      )
+    } else {
       return;
     }
   }
@@ -87,11 +88,30 @@ const EmployeeListScreen = props => {
     <View style={styles.mainBody}>
       <Loader loading={loading} />
       <ScrollView keyboardShouldPersistTaps="handled">
+        <DropDownPicker
+          items={[
+            { label: 'JAVA', value: 'java' },
+            { label: 'PYTHON', value: 'python' },
+            { label: 'C++', value: 'cpp' },
+            { label: 'RUBY', value: 'ruby' },
+          ]}
+          multiple={true}
+          placeholder={"Select"}
+          multipleText="%d items have been selected."
+          defaultValue={[]}
+          min={0}
+          max={10}
+          containerStyle={{ marginTop:10, height: 55, width: 200 }}
+          itemStyle={{
+            justifyContent: 'flex-start'
+          }}
+          onChangeItem={item => { }}
+        />
         <View style={{ marginTop: 100 }}>
-          {data.map((g, index) => { return cardView(index)})}
-            </View>
-            </ScrollView>
-            </View>
+          {data.map((g, index) => { return cardView(index) })}
+        </View>
+      </ScrollView>
+    </View>
   );
 };
 export default EmployeeListScreen;
@@ -100,7 +120,7 @@ const styles = StyleSheet.create({
   mainBody: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#307ecc',
+    backgroundColor: '#fff',
   },
   SectionStyle: {
     flexDirection: 'row',

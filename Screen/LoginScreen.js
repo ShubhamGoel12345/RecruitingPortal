@@ -70,7 +70,7 @@ const LoginScreen = (props) => {
           <KeyboardAvoidingView enabled>
             <View style={{ marginLeft: 35, marginTop: 20 }}>
               <Text style={styles.titleText}>
-                {"Recruiting"} 
+                {"Recruiting"}
                 {"\n"}
                 {"Portal"}
               </Text>

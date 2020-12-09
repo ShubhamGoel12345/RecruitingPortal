@@ -17,6 +17,7 @@ import {
   ScrollView,
 } from 'react-native';
 import Loader from './Components/loader';
+import { Avatar, Accessory } from 'react-native-elements';
 
 const ViewProfileScreen = props => {
   let data = props.navigation.state.params;
@@ -29,18 +30,16 @@ const ViewProfileScreen = props => {
 
   const viewProfile = () => {
     return(
-      <View style={{ flex: 1, backgroundColor: '#307ecc' }}>
+      <View style={{ flex: 1, backgroundColor: '#fff' }}>
         <ScrollView keyboardShouldPersistTaps="handled">
           <View style={{ alignItems: 'center' }}>
-            <Image
-              source={require('../Image/aboutreact.png')}
-              style={{
-                width: '50%',
-                height: 100,
-                resizeMode: 'contain',
-                margin: 30,
-              }}
-            />
+          <Avatar containerStyle={ {marginTop: 40 }}
+              size={200}
+              rounded
+              onPress={() => console.log("Works!")}
+              source={require('../Image/aboutreact.png')}>
+
+            </Avatar>
           </View>
           <KeyboardAvoidingView enabled>
             <View style={styles.ViewSectionStyle}>
@@ -122,7 +121,7 @@ const styles = StyleSheet.create({
   },
   viewStyle: {
     flex: 1,
-    color: 'white',
+    color: 'gray',
     flexDirection: 'column',
     paddingLeft: 5,
     paddingRight: 5,

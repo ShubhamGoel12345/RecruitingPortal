@@ -65,6 +65,7 @@ const RegisterScreen = (props) => {
       })
       .catch((error) => {
         setLoading(false);
+        setErrortext("User already exist")
         console.error(error);
       });
   };

@@ -23,7 +23,6 @@ const LoginScreen = (props) => {
   let [errortext, setErrortext] = useState("");
 
   const handleSubmitPress = async () => {
-    setLoading(true);
     setErrortext("");
     if (!userEmail) {
       alert("Please fill Email");
@@ -33,7 +32,7 @@ const LoginScreen = (props) => {
       alert("Please fill Password");
       return;
     }
-
+    setLoading(true);
     let auth = {
       username: userEmail,
       password: userPassword

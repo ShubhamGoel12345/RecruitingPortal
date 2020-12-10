@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CardView from 'react-native-cardview';
 import DropDownPicker from 'react-native-dropdown-picker';
 
@@ -13,6 +13,7 @@ import {
   Keyboard,
   TouchableOpacity,
   KeyboardAvoidingView,
+  Pressable,
 } from 'react-native';
 import Loader from './Components/loader';
 import { Requests } from "../utils/request";
@@ -25,17 +26,22 @@ const EmployeeListScreen = props => {
   let [loading, setLoading] = useState(true);
   let [errortext, setErrortext] = useState('');
   let [data, setData] = useState([]);
+  let [userSkills, setUserSkills] = useState([]);
 
-  Requests.get("/employees", {})
-    .then(async (res) => {
-      setLoading(false);
-      setData(res.data);
-    })
-    .catch((error) => {
-      setLoading(false);
-      console.log(error)
-    }
-    );
+  useEffect(() => {
+    console.log("userSkills", userSkills)
+    Requests.get("/employees", { skills: userSkills })
+      .then(async (res) => {
+        setLoading(false);
+        setData(res.data);
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.log(error)
+      }
+      );
+    console.log("okokokok")
+  }, [userSkills])
 
   const click = (index) => {
     props.navigation.navigate(
@@ -44,10 +50,11 @@ const EmployeeListScreen = props => {
     )
   }
 
+
   const cardView = (index) => {
     if (data[index]) {
       return (
-        <TouchableOpacity key={index}
+        <Pressable key={index}
           onPress={() => { click(index) }}>
           <CardView
             cardElevation={5}
@@ -60,7 +67,7 @@ const EmployeeListScreen = props => {
             <Avatar containerStyle={{ marginLeft: 10, marginBottom: 10 }}
               size={100}
               rounded
-              onPress={() => console.log("Works!")}
+              // onPress={() => console.log("Works!")}
               source={require('../Image/aboutreact.png')}>
 
             </Avatar>
@@ -77,7 +84,7 @@ const EmployeeListScreen = props => {
               Phone: {data[index].mobileNumber}
             </Text>
           </CardView>
-        </TouchableOpacity  >
+        </Pressable  >
       )
     } else {
       return;
@@ -87,7 +94,7 @@ const EmployeeListScreen = props => {
   return (
     <View style={styles.mainBody}>
       <Loader loading={loading} />
-      <ScrollView keyboardShouldPersistTaps="handled">
+      <View style={styles.SectionStyle}>
         <DropDownPicker
           items={[
             { label: 'JAVA', value: 'java' },
@@ -96,19 +103,21 @@ const EmployeeListScreen = props => {
             { label: 'RUBY', value: 'ruby' },
           ]}
           multiple={true}
-          placeholder={"Select"}
+          placeholder={"Skills"}
           multipleText="%d items have been selected."
           defaultValue={[]}
           min={0}
           max={10}
-          containerStyle={{ marginTop:10, height: 55, width: 200 }}
+          containerStyle={{ marginTop:5, marginLeft: 135, height: 55, width: 200}}
           itemStyle={{
             justifyContent: 'flex-start'
           }}
-          onChangeItem={item => { }}
+          onChangeItem={item => { setUserSkills(item) }}
         />
-        <View style={{ marginTop: 100 }}>
-          {data.map((g, index) => { return cardView(index) })}
+      </View>
+      <ScrollView keyboardShouldPersistTaps="handled">
+        <View style={{marginTop:20}}>
+          {data.map((g, index) => cardView(index))}
         </View>
       </ScrollView>
     </View>

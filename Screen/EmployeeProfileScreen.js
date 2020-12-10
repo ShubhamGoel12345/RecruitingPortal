@@ -71,7 +71,8 @@ const EmployeeProfileScreen = props => {
 
     Requests.put("/employees/id", {
       firstName: userFirstName,
-      lastName: userLastName
+      lastName: userLastName,
+      mobileNumber: userMobile
     }).then(async (res) => {
       let user = res.data.message;
       console.log(user);
@@ -80,6 +81,8 @@ const EmployeeProfileScreen = props => {
       setLoading(false);
       setUserFirstName(user.first_name);
       setUserLastName(user.last_name);
+      setUserEmail(user.email_address);
+      setUserMobile(user.mobile_number);
       toggleViewMode();
     })
       .catch(error => {
@@ -212,19 +215,6 @@ const EmployeeProfileScreen = props => {
                 placeholder="Enter Last Name"
                 placeholderTextColor="#F6F6F7"
                 autoCapitalize="sentences"
-                returnKeyType="next"
-                blurOnSubmit={false}
-              />
-            </View>
-            <View style={styles.SectionStyle}>
-              <TextInput
-                style={styles.inputStyle}
-                value={userEmail}
-                onChangeText={UserEmail => setUserEmail(UserEmail)}
-                underlineColorAndroid="#F6F6F7"
-                placeholder="Enter Email"
-                placeholderTextColor="#F6F6F7"
-                keyboardType="email-address"
                 returnKeyType="next"
                 blurOnSubmit={false}
               />

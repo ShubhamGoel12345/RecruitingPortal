@@ -1,30 +1,27 @@
-/* This is an Login Registration example from https://aboutreact.com/ */
-/* https://aboutreact.com/react-native-login-and-signup/ */
-
-//Import React and Hook we needed
 import AsyncStorage from '@react-native-community/async-storage';
 import React, { useState } from 'react';
-
-//Import all required component
+import DropDownPicker from 'react-native-dropdown-picker';
 import {
   StyleSheet,
   TextInput,
   View,
   Text,
-  Image,
   KeyboardAvoidingView,
-  Keyboard,
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
 import { Requests } from '../utils/request';
 import Loader from './Components/loader';
-import { Avatar, Accessory } from 'react-native-elements';
+import { Avatar } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/Feather';
+
 
 
 let stop = true;
 
-const EmployeeProfileScreen = props => {
+const EmployeeProfileScreen = (props) => {
+
+  // console.log(props.navigation.getparams('type_type'))
   let data = {}
 
   let [userFirstName, setUserFirstName] = useState(data.first_name || '');
@@ -34,13 +31,13 @@ const EmployeeProfileScreen = props => {
   let [userSkills, setUserSkills] = useState(data.skills || []);
   let [loading, setLoading] = useState(false);
   let [errortext, setErrortext] = useState('');
-  let [isUpdateSuccess, setIsRegistraionSuccess] = useState(false);
   let [viewMode, setViewMode] = useState(true);
 
   if (stop) {
     AsyncStorage.getItem('user').then((res) => {
       stop = false;
       data = JSON.parse(res);
+      console.log(data)
       setUserFirstName(data.first_name);
       setUserLastName(data.last_name);
       setUserEmail(data.email_address);
@@ -229,6 +226,27 @@ const EmployeeProfileScreen = props => {
                 placeholderTextColor="#F6F6F7"
                 keyboardType="numeric"
                 blurOnSubmit={false}
+              />
+            </View>
+            <View style={styles.SectionStyle}>
+              <DropDownPicker
+                items={[
+                  { label: 'JAVA', value: 'java' },
+                  { label: 'PYTHON', value: 'python' },
+                  { label: 'C++', value: 'cpp' },
+                  { label: 'RUBY', value: 'ruby' },
+                ]}
+                multiple={true}
+                placeholder={"Select Skills"}
+                multipleText="%d items have been selected."
+                defaultValue={[]}
+                min={0}
+                max={10}
+                containerStyle={{ flex: 1, height: 45 }}
+                itemStyle={{
+                  justifyContent: 'flex-start'
+                }}
+                onChangeItem={item => setUserSkills(item)}
               />
             </View>
             {errortext != '' ? (

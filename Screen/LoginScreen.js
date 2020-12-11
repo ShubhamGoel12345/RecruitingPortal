@@ -41,16 +41,15 @@ const LoginScreen = (props) => {
     Requests.get("/signin", {}, auth)
       .then(async (res) => {
         setLoading(false)
-        let user = res.data.message;
-
+        let user = res.data;
         await AsyncStorage.setItem('token', res.config.headers.Authorization);
         await AsyncStorage.setItem('userType', user.type_type);
         await AsyncStorage.setItem('user', JSON.stringify(user));
-
-        if(user.type_type !== 'Employee') {
-          props.navigation.navigate("EmployeeListScreen");
+        
+        if (user.type_type == 'Employee') {
+          props.navigation.navigate("DrawerNavigationRoutesEmployee");
         } else {
-          props.navigation.navigate("EmployeeProfileScreen", user);
+          props.navigation.navigate("DrawerNavigationRoutesEmployer");
         }
       })
       .catch((error) => {

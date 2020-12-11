@@ -1,33 +1,32 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 //Import all required component
-import { ActivityIndicator, View, StyleSheet, Image } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+import { ActivityIndicator, View, StyleSheet, Image } from "react-native";
+import AsyncStorage from "@react-native-community/async-storage";
 
-const SplashScreen = props => {
-  //State for ActivityIndicator animation
+const SplashScreen = (props) => {
   let [animating, setAnimating] = useState(true);
 
   useEffect(() => {
     setTimeout(() => {
       setAnimating(false);
-      //Check if user_id is set or not
       //If not then send for Authentication
       //else send to Home Screen
-      AsyncStorage.getItem('user_id').then(value =>
-        props.navigation.navigate(
-          value === null ? 'Auth' : 'DrawerNavigationRoutes'
-        )
-      );
+      AsyncStorage.multiGet(["token", "userType"]).then((value) => {
+        let nav = "Auth";
+        if (value[0][1] !== null && value[1][1] !== null) {
+          nav =
+            value[1][1] === "Employee"
+              ? "DrawerNavigationRoutesEmployee"
+              : "DrawerNavigationRoutesEmployer";
+        }
+        return props.navigation.navigate(nav);
+      });
     }, 5000);
   }, []);
 
   return (
     <View style={styles.container}>
-      {/* <Image
-        source={require('../Image/aboutreact.png')}
-        style={{ width: '90%', resizeMode: 'contain', margin: 30 }}
-      /> */}
       <ActivityIndicator
         animating={animating}
         color="#2441d2"
@@ -42,12 +41,12 @@ export default SplashScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#fff',
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#fff",
   },
   activityIndicator: {
-    alignItems: 'center',
+    alignItems: "center",
     height: 80,
   },
 });

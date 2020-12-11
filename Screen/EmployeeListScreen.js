@@ -2,34 +2,24 @@ import React, { useEffect, useState } from 'react';
 import CardView from 'react-native-cardview';
 import DropDownPicker from 'react-native-dropdown-picker';
 
-//Import all required component
 import {
   StyleSheet,
-  TextInput,
   View,
   Text,
   ScrollView,
-  Image,
-  Keyboard,
-  TouchableOpacity,
-  KeyboardAvoidingView,
   Pressable,
 } from 'react-native';
 import Loader from './Components/loader';
 import { Requests } from "../utils/request";
-import { Avatar, Accessory } from 'react-native-elements';
+import { Avatar } from 'react-native-elements';
 
 
 const EmployeeListScreen = props => {
-  let [selectedSkills, setSkills] = useState('');
-  let [userPassword, setUserPassword] = useState('');
   let [loading, setLoading] = useState(true);
-  let [errortext, setErrortext] = useState('');
   let [data, setData] = useState([]);
   let [userSkills, setUserSkills] = useState([]);
 
   useEffect(() => {
-    console.log("userSkills", userSkills)
     Requests.get("/employees", { skills: userSkills })
       .then(async (res) => {
         setLoading(false);
@@ -40,16 +30,14 @@ const EmployeeListScreen = props => {
         console.log(error)
       }
       );
-    console.log("okokokok")
   }, [userSkills])
 
   const click = (index) => {
-    props.navigation.navigate(
+    return props.navigation.navigate(
       'ViewProfileScreen',
       data[index]
     )
   }
-
 
   const cardView = (index) => {
     if (data[index]) {
@@ -67,7 +55,6 @@ const EmployeeListScreen = props => {
             <Avatar containerStyle={{ marginLeft: 10, marginBottom: 10 }}
               size={100}
               rounded
-              // onPress={() => console.log("Works!")}
               source={require('../Image/aboutreact.png')}>
 
             </Avatar>

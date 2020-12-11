@@ -62,7 +62,7 @@ const CustomSidebarMenu = props => {
             {'About React'.charAt(0)}
           </Text>
         </View>
-        <Text style={stylesSidebar.profileHeaderText}>AboutReact</Text>
+        <Text style={stylesSidebar.profileHeaderText}>Welcome</Text>
       </View>
       <View style={stylesSidebar.profileHeaderLine} />
       <View style={{ width: '100%', flex: 1 }}>

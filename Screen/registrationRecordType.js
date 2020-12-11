@@ -42,17 +42,17 @@ export const RegistrationModalRecord = {
         { label: 'Employer', value: 'Employer'},
       ]
     },
-    {
-      key: "skills",
-      name: "Skills",
-      type: "multi-select",
-      isRequired: true,
-      dropDownList: [
-        { label: 'JAVA', value: 'java'},
-        { label: 'PYTHON', value: 'python'},
-        { label: 'C++', value: 'cpp'},
-        { label: 'RUBY', value: 'ruby'},
-      ]
-    },
+    // {
+    //   key: "skills",
+    //   name: "Skills",
+    //   type: "multi-select",
+    //   isRequired: true,
+    //   dropDownList: [
+    //     { label: 'JAVA', value: 'java'},
+    //     { label: 'PYTHON', value: 'python'},
+    //     { label: 'C++', value: 'cpp'},
+    //     { label: 'RUBY', value: 'ruby'},
+    //   ]
+    // },
   ],
 };

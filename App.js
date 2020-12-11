@@ -17,7 +17,8 @@ import { createStackNavigator } from 'react-navigation-stack';
 import SplashScreen from './Screen/SplashScreen';
 import LoginScreen from './Screen/LoginScreen';
 import RegisterScreen from './Screen/RegisterScreen';
-import DrawerNavigationRoutes from './Screen/DrawerNavigationRoutes';
+import DrawerNavigationRoutesEmployer from './Screen/DrawerNavigationRoutesEmployer';
+import DrawerNavigatorRoutesEmployee from './Screen/DrawerNavigationRouteEmployee'
 import EmployeeListScreen from './Screen/EmployeeListScreen';
 import EmployeeProfileScreen from './Screen/EmployeeProfileScreen';
 import ViewProfileScreen from './Screen/ViewProfileScreen';
@@ -40,18 +41,27 @@ const Auth = createStackNavigator({
       headerTintColor: '#fff',
     },
   },
-  EmployeeListScreen: {
-    screen: EmployeeListScreen,
-    navigationOptions: {
-      headerShown: false,
-    },
-  },
-  EmployeeProfileScreen: {
-    screen: EmployeeProfileScreen,
-    navigationOptions: {
-      headerShown: false,
-    },
-  },
+  // EmployeeListScreen: {
+  //   screen: EmployeeListScreen,
+  //   navigationOptions: {
+  //     headerShown: false,
+  //   },
+  // },
+  // EmployeeProfileScreen: {
+  //   screen: EmployeeProfileScreen,
+  //   navigationOptions: {
+  //     headerShown: false,
+  //   },
+  // },
+  // ViewProfileScreen: {
+  //   screen: ViewProfileScreen,
+  //   navigationOptions: {
+  //     headerShown: false,
+  //   },
+  // }
+});
+
+const navigationTemp = createStackNavigator({
   ViewProfileScreen: {
     screen: ViewProfileScreen,
     navigationOptions: {
@@ -62,7 +72,7 @@ const Auth = createStackNavigator({
 
 /* Switch Navigator for those screens which needs to be switched only once
   and we don't want to switch back once we switch from them to the next one */
-const App = createSwitchNavigator({ 
+const App = createSwitchNavigator({
   SplashScreen: {
     /* SplashScreen which will come once for 5 Seconds */
     screen: SplashScreen,
@@ -75,14 +85,26 @@ const App = createSwitchNavigator({
     /* Auth Navigator which includer Login Signup will come once */
     screen: Auth,
   },
-  DrawerNavigationRoutes: {
+  DrawerNavigationRoutesEmployer: {
     /* Navigation Drawer as a landing page */
-    screen: DrawerNavigationRoutes,
+    screen: DrawerNavigationRoutesEmployer,
     navigationOptions: {
       /* Hiding header for Navigation Drawer as we will use our custom header */
       headerShown: false,
     },
   },
+  DrawerNavigationRoutesEmployee: {
+    screen: DrawerNavigatorRoutesEmployee,
+    navigationOptions: {
+      headerShown: false
+    }
+  },
+  navigationTemp: {
+    screen: navigationTemp,
+    navigationOptions:{
+      headerShown: false
+    }
+  }
 });
 
 export default createAppContainer(App);

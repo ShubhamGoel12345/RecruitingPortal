@@ -13,10 +13,11 @@ import HomeScreen from './drawerScreens/HomeScreen';
 import SettingsScreen from './drawerScreens/SettingsScreen';
 import CustomSidebarMenu from './Components/CustomSidebarMenu';
 import NavigationDrawerHeader from './Components/NavigationDrawerHeader';
+import EmployeeProfileScreen from './EmployeeProfileScreen'
 
 const FirstActivity_StackNavigator = createStackNavigator({
   First: {
-    screen: HomeScreen,
+    screen: EmployeeProfileScreen,
     navigationOptions: ({ navigation }) => ({
       title: 'Home Screen',
       headerLeft: () => <NavigationDrawerHeader navigationProps={navigation} />,
@@ -42,7 +43,7 @@ const SecondActivity_StackNavigator = createStackNavigator({
   },
 });
 
-const DrawerNavigatorRoutes = createDrawerNavigator(
+const DrawerNavigatorRoutesEmployee = createDrawerNavigator(
   {
     HomeScreen: {
       screen: FirstActivity_StackNavigator,
@@ -64,4 +65,4 @@ const DrawerNavigatorRoutes = createDrawerNavigator(
     drawerToggleRoute: 'DrawerToggle',
   }
 );
-export default DrawerNavigatorRoutes;
+export default DrawerNavigatorRoutesEmployee;

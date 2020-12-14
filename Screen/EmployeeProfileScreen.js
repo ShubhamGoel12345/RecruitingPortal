@@ -75,15 +75,6 @@ const EmployeeProfileScreen = () => {
   const viewProfile = () => {
     return (
       <View style={{ flex: 1, backgroundColor: "#fff" }}>
-        <Avatar
-          containerStyle={{ marginLeft: 325, marginTop: 15 }}
-          rounded
-          onPress={() => console.log("Works!")}
-          source={{
-            uri:
-              "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg",
-          }}
-        />
         <Loader loading={loading} />
         <ScrollView keyboardShouldPersistTaps="handled">
           <View style={{ alignItems: "center" }}>

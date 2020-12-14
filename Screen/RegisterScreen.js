@@ -15,7 +15,7 @@ import {
   ScrollView,
 } from "react-native";
 import { createField } from "./Components/formField";
-import { RegistrationModalRecord } from "./registrationRecordType";
+import { RegistrationModalRecord } from "./state/registrationRecordType";
 import Loader from "./Components/loader";
 
 const RegisterScreen = (props) => {

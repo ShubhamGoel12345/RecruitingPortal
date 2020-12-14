@@ -4,16 +4,17 @@ import {
   StyleSheet,
   TextInput,
   View,
+  Text
 } from "react-native";
 import DropDownPicker from 'react-native-dropdown-picker';
 
-export function getLabel(field){
+export function getLabel(field) {
   return (
     field.name + (field.isRequired ? " *" : "")
   )
 }
 
-export const createField = (field, onChange) => {
+export const createField = (field, onChange, defaultValue) => {
 
   const fieldKey = JSON.stringify(field)
   switch (field.type) {
@@ -33,6 +34,34 @@ export const createField = (field, onChange) => {
           />
         </View>
 
+      )
+    case "prefilled-text-box":
+      return (
+        <View key={fieldKey} style={styles.SectionStyle}>
+          <TextInput
+            style={styles.inputStyle}
+            value={defaultValue[field.key]}
+            onChangeText={UserName => onChange(field.key, UserName)}
+            underlineColorAndroid="#FFFFFF"
+            placeholder={`Enter ${getLabel(field)}`}
+            placeholderTextColor="#797979"
+            autoCapitalize="sentences"
+            returnKeyType="next"
+            onSubmitEditing={() => { }}
+            blurOnSubmit={false}
+          />
+        </View>
+      )
+    case "view-field":
+      return (
+        <View key={fieldKey} style={styles.ViewSectionStyle}>
+          <Text style={styles.viewStyle}>
+            {field.name}
+          </Text>
+          <Text style={styles.viewStyle}>
+            {field.isArray == true ? (defaultValue[field.key] || "").toString() : defaultValue[field.key]}
+          </Text>
+        </View>
       )
     case "select":
       return (
@@ -58,7 +87,7 @@ export const createField = (field, onChange) => {
             multiple={true}
             placeholder={`Select ${getLabel(field)}`}
             multipleText="%d items have been selected."
-            defaultValue={[]}
+            defaultValue={defaultValue[field.key] || []}
             min={0}
             max={10}
             containerStyle={{ flex: 1, height: 45 }}
@@ -66,7 +95,7 @@ export const createField = (field, onChange) => {
               justifyContent: 'flex-start'
             }}
             onChangeItem={item => onChange(field.key, item)
-          }
+            }
           />
         </View>
       )
@@ -95,5 +124,21 @@ export const styles = StyleSheet.create({
     height: 45,
     borderColor: '#d8d8d8',
     borderWidth: 1
+  },
+  ViewSectionStyle: {
+    height: 40,
+    marginTop: 20,
+    marginLeft: 35,
+    marginRight: 35,
+    margin: 10,
+    flexDirection: 'row',
+  },
+  viewStyle: {
+    flex: 1,
+    color: 'gray',
+    flexDirection: 'column',
+    paddingLeft: 5,
+    paddingRight: 5,
+    fontSize: 16
   },
 });

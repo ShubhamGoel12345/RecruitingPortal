@@ -1,268 +1,153 @@
-import AsyncStorage from '@react-native-community/async-storage';
-import React, { useState } from 'react';
-import DropDownPicker from 'react-native-dropdown-picker';
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
-  TextInput,
   View,
   Text,
   KeyboardAvoidingView,
   TouchableOpacity,
   ScrollView,
-} from 'react-native';
-import { Requests } from '../utils/request';
-import Loader from './Components/loader';
-import { Avatar } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/Feather';
+} from "react-native";
+import { Requests } from "../utils/request";
+import Loader from "./Components/loader";
+import { Avatar } from "react-native-elements";
+import { EmployeeProfileViewRecord, EmployeeProfileEditRecord } from "./state/employeeProfileRecordType";
+import { createField } from "./Components/formField";
 
-
-
-let stop = true;
-
-const EmployeeProfileScreen = (props) => {
-
-  // console.log(props.navigation.getparams('type_type'))
-  let data = {}
-
-  let [userFirstName, setUserFirstName] = useState(data.first_name || '');
-  let [userLastName, setUserLastName] = useState(data.last_name || '');
-  let [userEmail, setUserEmail] = useState(data.email_address || '');
-  let [userMobile, setUserMobile] = useState(data.mobile_number || '');
-  let [userSkills, setUserSkills] = useState(data.skills || []);
-  let [loading, setLoading] = useState(false);
-  let [errortext, setErrortext] = useState('');
+const EmployeeProfileScreen = () => {
+  let [userData, setUserData] = useState({});
+  let [loading, setLoading] = useState(true);
+  let [errortext, setErrortext] = useState("");
   let [viewMode, setViewMode] = useState(true);
 
-  if (stop) {
-    AsyncStorage.getItem('user').then((res) => {
-      stop = false;
-      data = JSON.parse(res);
-      console.log(data)
-      setUserFirstName(data.first_name);
-      setUserLastName(data.last_name);
-      setUserEmail(data.email_address);
-      setUserMobile(data.mobile_number);
-      setUserSkills(data.skills);
+  useEffect(() => {
+    Requests.get("/getUser")
+      .then((res) => {
+        setLoading(false);
+        setUserData(res.data.data);
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.log(error);
+      });
+  }, []);
+
+  const onChange = (key, data) => {
+    let payload = Object.assign({}, userData);
+    payload[key] = data 
+    setUserData(payload);
+  };
+
+  const validateForm = () => {
+    let anyError = false
+    EmployeeProfileEditRecord.fields.forEach((field) => {
+      if (userData[field.key] === undefined || userData[field.key] === null) {
+        anyError = true
+      }
     });
+    return anyError
   }
 
   const handleSubmitButton = () => {
-    setErrortext('');
+    setErrortext("");
     setLoading(true);
-    if (!userFirstName) {
-      alert('Please fill First Name');
-      return;
-    }
-    if (!userLastName) {
-      alert('Please fill Last Name');
-      return;
-    }
-    if (!userEmail) {
-      alert('Please fill Email');
-      return;
-    }
-    if (!userMobile) {
-      alert('Please fill Mobile Number');
-      return;
-    }
 
-    Requests.put("/employees/id", {
-      firstName: userFirstName,
-      lastName: userLastName,
-      mobileNumber: userMobile
-    }).then(async (res) => {
-      let user = res.data.message;
-      console.log(user);
-      await AsyncStorage.setItem('user', JSON.stringify(user));
-
-      setLoading(false);
-      setUserFirstName(user.first_name);
-      setUserLastName(user.last_name);
-      setUserEmail(user.email_address);
-      setUserMobile(user.mobile_number);
-      toggleViewMode();
-    })
-      .catch(error => {
-        setLoading(false)
-        console.log(error)
+    if (validateForm()) {
+      alert("Please fill required field");
+      console.log("invalid form")
+      return
+    }
+    Requests.put("/users/id", userData)
+      .then(() => {
+        setLoading(false);
+        toggleViewMode();
       })
+      .catch((error) => {
+        setLoading(false);
+        console.log(error);
+      });
   };
 
   const toggleViewMode = () => {
     setViewMode(!viewMode);
-  }
+  };
 
 
-  // containerStyle ={{marginLeft: 350, marginTop: 5}}
   const viewProfile = () => {
     return (
-      <View style={{ flex: 1, backgroundColor: '#fff' }}>
-        <Avatar containerStyle={{ marginLeft: 325, marginTop: 15 }}
+      <View style={{ flex: 1, backgroundColor: "#fff" }}>
+        <Avatar
+          containerStyle={{ marginLeft: 325, marginTop: 15 }}
           rounded
           onPress={() => console.log("Works!")}
           source={{
             uri:
-              'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
+              "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg",
           }}
         />
         <Loader loading={loading} />
         <ScrollView keyboardShouldPersistTaps="handled">
-          <View style={{ alignItems: 'center' }}>
-            <Avatar containerStyle={{ marginLeft: 10, marginTop: 40 }}
+          <View style={{ alignItems: "center" }}>
+            <Avatar
+              containerStyle={{ marginLeft: 10, marginTop: 40 }}
               size={200}
               rounded
               onPress={() => console.log("Works!")}
-              source={require('../Image/aboutreact.png')}>
-
-            </Avatar>
+              source={require("../Image/aboutreact.png")}
+            ></Avatar>
           </View>
           <KeyboardAvoidingView enabled>
-            <View style={styles.ViewSectionStyle}>
-              <Text style={styles.viewStyle}>
-                First Name:
-              </Text>
-
-              <Text style={styles.viewStyle}>
-                {userFirstName}
-              </Text>
-            </View>
-            <View style={styles.ViewSectionStyle}>
-              <Text style={styles.viewStyle}>
-                Last Name:
-              </Text>
-
-              <Text style={styles.viewStyle}>
-                {userLastName}
-              </Text>
-            </View>
-            <View style={styles.ViewSectionStyle}>
-              <Text style={styles.viewStyle}>
-                Email Address:
-              </Text>
-
-              <Text style={styles.viewStyle}>
-                {userEmail}
-              </Text>
-            </View>
-            <View style={styles.ViewSectionStyle}>
-              <Text style={styles.viewStyle}>
-                Mobile Number:
-              </Text>
-
-              <Text style={styles.viewStyle}>
-                {userMobile}
-              </Text>
-            </View>
-            <View style={styles.ViewSectionStyle}>
-              <Text style={styles.viewStyle}>
-                Skills:
-              </Text>
-
-              <Text style={styles.viewStyle}>
-                {userSkills}
-              </Text>
-            </View>
-            {errortext != '' ? (
+            {EmployeeProfileViewRecord.fields.map((field) =>
+              createField(field, () => {}, userData)
+            )}
+            {errortext != "" ? (
               <Text style={styles.errorTextStyle}> {errortext} </Text>
             ) : null}
             <TouchableOpacity
               style={styles.buttonStyle}
               activeOpacity={0.5}
-              onPress={toggleViewMode}>
+              onPress={toggleViewMode}
+            >
               <Text style={styles.buttonTextStyle}>Edit</Text>
             </TouchableOpacity>
           </KeyboardAvoidingView>
         </ScrollView>
       </View>
-    )
-  }
+    );
+  };
 
   const editProfile = () => {
     return (
-      <View style={{ flex: 1, backgroundColor: '#fff' }}>
+      <View style={{ flex: 1, backgroundColor: "#fff" }}>
         <Loader loading={loading} />
         <ScrollView keyboardShouldPersistTaps="handled">
-          <View style={{ alignItems: 'center' }}>
-            <Avatar containerStyle={{ marginLeft: 10, marginTop: 60 }}
+          <View style={{ alignItems: "center" }}>
+            <Avatar
+              containerStyle={{ marginLeft: 10, marginTop: 60 }}
               size={200}
               rounded
               onPress={() => console.log("Works!")}
-              source={require('../Image/aboutreact.png')}></Avatar>
+              source={require("../Image/aboutreact.png")}
+            ></Avatar>
           </View>
           <KeyboardAvoidingView enabled>
-            <View style={styles.SectionStyle}>
-              <TextInput
-                style={styles.inputStyle}
-                value={userFirstName}
-                onChangeText={UserFirstName => setUserFirstName(UserFirstName)}
-                underlineColorAndroid="#FFFFFF"
-                placeholder="Enter First Name"
-                placeholderTextColor="#F6F6F7"
-                autoCapitalize="sentences"
-                returnKeyType="next"
-                blurOnSubmit={false}
-              />
-            </View>
-            <View style={styles.SectionStyle}>
-              <TextInput
-                style={styles.inputStyle}
-                value={userLastName}
-                onChangeText={UserLastName => setUserLastName(UserLastName)}
-                underlineColorAndroid="#FFFFFF"
-                placeholder="Enter Last Name"
-                placeholderTextColor="#F6F6F7"
-                autoCapitalize="sentences"
-                returnKeyType="next"
-                blurOnSubmit={false}
-              />
-            </View>
-            <View style={styles.SectionStyle}>
-              <TextInput
-                style={styles.inputStyle}
-                value={userMobile}
-                onChangeText={UserMobile => setUserMobile(UserMobile)}
-                underlineColorAndroid="#F6F6F7"
-                placeholder="Enter Mobile"
-                placeholderTextColor="#F6F6F7"
-                keyboardType="numeric"
-                blurOnSubmit={false}
-              />
-            </View>
-            <View style={styles.SectionStyle}>
-              <DropDownPicker
-                items={[
-                  { label: 'JAVA', value: 'java' },
-                  { label: 'PYTHON', value: 'python' },
-                  { label: 'C++', value: 'cpp' },
-                  { label: 'RUBY', value: 'ruby' },
-                ]}
-                multiple={true}
-                placeholder={"Select Skills"}
-                multipleText="%d items have been selected."
-                defaultValue={[]}
-                min={0}
-                max={10}
-                containerStyle={{ flex: 1, height: 45 }}
-                itemStyle={{
-                  justifyContent: 'flex-start'
-                }}
-                onChangeItem={item => setUserSkills(item)}
-              />
-            </View>
-            {errortext != '' ? (
+            {EmployeeProfileEditRecord.fields.map((field) =>
+              createField(field, onChange, userData)
+            )}
+            {errortext != "" ? (
               <Text style={styles.errorTextStyle}> {errortext} </Text>
             ) : null}
             <TouchableOpacity
               style={styles.buttonStyle}
               activeOpacity={0.5}
-              onPress={handleSubmitButton}>
+              onPress={handleSubmitButton}
+            >
               <Text style={styles.buttonTextStyle}>Update</Text>
             </TouchableOpacity>
           </KeyboardAvoidingView>
         </ScrollView>
       </View>
-    )
-  }
+    );
+  };
 
   const showProfile = () => {
     if (viewMode) {
@@ -270,7 +155,7 @@ const EmployeeProfileScreen = (props) => {
     } else {
       return editProfile();
     }
-  }
+  };
 
   return showProfile();
 };
@@ -278,7 +163,7 @@ export default EmployeeProfileScreen;
 
 const styles = StyleSheet.create({
   SectionStyle: {
-    flexDirection: 'row',
+    flexDirection: "row",
     height: 40,
     marginTop: 20,
     marginLeft: 35,
@@ -291,15 +176,15 @@ const styles = StyleSheet.create({
     marginLeft: 35,
     marginRight: 35,
     margin: 10,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   viewStyle: {
     flex: 1,
-    color: 'gray',
-    flexDirection: 'column',
+    color: "gray",
+    flexDirection: "column",
     paddingLeft: 5,
     paddingRight: 5,
-    fontSize: 16
+    fontSize: 16,
   },
   buttonStyle: {
     backgroundColor: "#2441d2",
@@ -315,7 +200,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   buttonTextStyle: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     paddingVertical: 10,
     fontSize: 16,
   },
@@ -328,17 +213,17 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: "#fff",
     height: 45,
-    borderColor: '#d8d8d8',
-    borderWidth: 1
+    borderColor: "#d8d8d8",
+    borderWidth: 1,
   },
   errorTextStyle: {
-    color: 'red',
-    textAlign: 'center',
+    color: "red",
+    textAlign: "center",
     fontSize: 14,
   },
   successTextStyle: {
-    color: 'white',
-    textAlign: 'center',
+    color: "white",
+    textAlign: "center",
     fontSize: 18,
     padding: 30,
   },

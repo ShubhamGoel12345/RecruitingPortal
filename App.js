@@ -36,9 +36,9 @@ const Auth = createStackNavigator({
     navigationOptions: {
       title: 'Register',
       headerStyle: {
-        backgroundColor: '#307ecc',
+        backgroundColor: '#eee',
       },
-      headerTintColor: '#fff',
+      headerTintColor: 'black',
     },
   },
   // EmployeeListScreen: {

@@ -9,23 +9,21 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 
 //Import External Screens
-import HomeScreen from './drawerScreens/HomeScreen';
 import SettingsScreen from './drawerScreens/SettingsScreen';
 import CustomSidebarMenu from './Components/CustomSidebarMenu';
 import NavigationDrawerHeader from './Components/NavigationDrawerHeader';
-import EmployeeProfileScreen from './EmployeeProfileScreen'
 
 import EmployeeListScreen from './EmployeeListScreen'
 const FirstActivity_StackNavigator = createStackNavigator({
   First: {
     screen: EmployeeListScreen,
     navigationOptions: ({ navigation }) => ({
-      title: 'Home Screen',
+      title: 'Home',
       headerLeft: () => <NavigationDrawerHeader navigationProps={navigation} />,
       headerStyle: {
-        backgroundColor: '#307ecc',
+        backgroundColor: '#eee',
       },
-      headerTintColor: '#fff',
+      headerTintColor: 'black',
     }),
   },
 });
@@ -34,12 +32,12 @@ const SecondActivity_StackNavigator = createStackNavigator({
   First: {
     screen: SettingsScreen,
     navigationOptions: ({ navigation }) => ({
-      title: 'Setting Screen',
+      title: 'Setting',
       headerLeft: () => <NavigationDrawerHeader navigationProps={navigation} />,
       headerStyle: {
-        backgroundColor: '#307ecc',
+        backgroundColor: '#eee',
       },
-      headerTintColor: '#fff',
+      headerTintColor: 'black',
     }),
   },
 });
@@ -49,13 +47,13 @@ const DrawerNavigationRoutesEmployer = createDrawerNavigator(
     HomeScreen: {
       screen: FirstActivity_StackNavigator,
       navigationOptions: {
-        drawerLabel: 'Home Screen',
+        drawerLabel: 'Home',
       },
     },
     SettingsScreen: {
       screen: SecondActivity_StackNavigator,
       navigationOptions: {
-        drawerLabel: 'Setting Screen',
+        drawerLabel: 'Setting',
       },
     },
   },

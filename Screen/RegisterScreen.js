@@ -50,6 +50,11 @@ const RegisterScreen = (props) => {
       return
     }
     const payload = _.mapValues(userPayload, (v) => v && v.value);
+    payload['skills'] = [];
+    payload['companyName'] = 'company';
+
+    console.log(payload);
+
     setErrortext("");
     setLoading(true);
     Requests.post("/users", payload)
@@ -65,7 +70,7 @@ const RegisterScreen = (props) => {
       })
       .catch((error) => {
         setLoading(false);
-        setErrortext("User already exist")
+        setErrortext("Registration Failed");
         console.error(error);
       });
   };
@@ -78,7 +83,7 @@ const RegisterScreen = (props) => {
           backgroundColor: "#fff",
         }}
       >
-        <Text style={styles.successTextStyle}>{"Registration"} {"\n"}{"Successful"}</Text>
+        <Text style={styles.successTextStyle}>{"Registration"} {"Successful"}</Text>
         <TouchableOpacity
           style={styles.buttonStyle}
           activeOpacity={0.5}
@@ -160,9 +165,11 @@ const styles = StyleSheet.create({
   },
   successTextStyle: {
     marginTop: 120,
-    marginBottom: 50,
+    marginBottom: 20,
     marginLeft: 20,
-    fontSize: 60,
+    marginRight: 40,
+    textAlign: "center",
+    fontSize: 32,
     color: "#5c5c5c",
   },
 });

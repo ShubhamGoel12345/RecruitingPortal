@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AsyncStorage from '@react-native-community/async-storage';
 
 import {
@@ -19,8 +19,27 @@ import { Requests } from "../utils/request";
 const LoginScreen = (props) => {
   let [userEmail, setUserEmail] = useState("");
   let [userPassword, setUserPassword] = useState("");
-  let [loading, setLoading] = useState(false);
+  let [loading, setLoading] = useState(true);
   let [errortext, setErrortext] = useState("");
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+      setErrortext("");
+      //If not then send for Authentication
+      //else send to Home Screen
+      AsyncStorage.multiGet(["token", "userType"]).then((value) => {
+        let nav = "Auth";
+        if (value[0][1] !== null && value[1][1] !== null) {
+          nav =
+            value[1][1] === "Employee"
+              ? "DrawerNavigationRoutesEmployee"
+              : "DrawerNavigationRoutesEmployer";
+        }
+        return props.navigation.navigate(nav);
+      });
+    }, 1000);
+  }, []);
 
   const handleSubmitPress = async () => {
     setErrortext("");

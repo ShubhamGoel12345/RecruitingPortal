@@ -22,7 +22,7 @@ const SplashScreen = (props) => {
         }
         return props.navigation.navigate(nav);
       });
-    }, 5000);
+    }, 1000);
   }, []);
 
   return (

@@ -58,20 +58,20 @@ const EmployeeListScreen = props => {
               source={require('../Image/aboutreact.png')}>
 
             </Avatar>
-            <Text>
+            <Text style={styles.bold}>
               Name: {data[index].firstName} {data[index].lastName}
             </Text>
-            <Text>
+            <Text style={styles.bold}>
               Skills: {data[index].skills.join(',')}
             </Text>
-            <Text>
+            <Text style={styles.bold}>
               Email: {data[index].emailAddress}
             </Text>
-            <Text>
+            <Text style={styles.bold}>
               Phone: {data[index].mobileNumber}
             </Text>
           </CardView>
-        </Pressable  >
+        </Pressable>
       )
     } else {
       return;
@@ -113,6 +113,9 @@ const EmployeeListScreen = props => {
 export default EmployeeListScreen;
 
 const styles = StyleSheet.create({
+  bold: {
+    fontWeight: 'bold'
+  },
   mainBody: {
     flex: 1,
     justifyContent: 'center',

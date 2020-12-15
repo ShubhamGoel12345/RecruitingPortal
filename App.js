@@ -23,56 +23,8 @@ import EmployeeListScreen from './Screen/EmployeeListScreen';
 import EmployeeProfileScreen from './Screen/EmployeeProfileScreen';
 import ViewProfileScreen from './Screen/ViewProfileScreen';
 
-const Auth = createStackNavigator({
+const App = createStackNavigator({
   //Stack Navigator for Login and Sign up Screen
-  LoginScreen: {
-    screen: LoginScreen,
-    navigationOptions: {
-      headerShown: false,
-    },
-  },
-  RegisterScreen: {
-    screen: RegisterScreen,
-    navigationOptions: {
-      title: 'Register',
-      headerStyle: {
-        backgroundColor: '#eee',
-      },
-      headerTintColor: 'black',
-    },
-  },
-  // EmployeeListScreen: {
-  //   screen: EmployeeListScreen,
-  //   navigationOptions: {
-  //     headerShown: false,
-  //   },
-  // },
-  // EmployeeProfileScreen: {
-  //   screen: EmployeeProfileScreen,
-  //   navigationOptions: {
-  //     headerShown: false,
-  //   },
-  // },
-  // ViewProfileScreen: {
-  //   screen: ViewProfileScreen,
-  //   navigationOptions: {
-  //     headerShown: false,
-  //   },
-  // }
-});
-
-const navigationTemp = createStackNavigator({
-  ViewProfileScreen: {
-    screen: ViewProfileScreen,
-    navigationOptions: {
-      headerShown: false,
-    },
-  }
-});
-
-/* Switch Navigator for those screens which needs to be switched only once
-  and we don't want to switch back once we switch from them to the next one */
-const App = createSwitchNavigator({
   SplashScreen: {
     /* SplashScreen which will come once for 5 Seconds */
     screen: SplashScreen,
@@ -82,8 +34,21 @@ const App = createSwitchNavigator({
     },
   },
   Auth: {
-    /* Auth Navigator which includer Login Signup will come once */
-    screen: Auth,
+    screen: LoginScreen,
+    navigationOptions: {
+      headerShown: false,
+    },
+  },
+  RegisterScreen: {
+    screen: RegisterScreen,
+    navigationOptions: {
+      title: 'Register',
+      headerShown: true,
+      headerStyle: {
+        backgroundColor: '#eee',
+      },
+      headerTintColor: 'black',
+    },
   },
   DrawerNavigationRoutesEmployer: {
     /* Navigation Drawer as a landing page */
@@ -99,12 +64,27 @@ const App = createSwitchNavigator({
       headerShown: false
     }
   },
-  navigationTemp: {
-    screen: navigationTemp,
-    navigationOptions:{
-      headerShown: false
-    }
-  }
+  EmployeeListScreen: {
+    screen: EmployeeListScreen,
+    navigationOptions: {
+      headerShown: false,
+    },
+  },
+  ViewProfileScreen: {
+    screen: ViewProfileScreen,
+    navigationOptions: {
+      headerShown: true,
+    },
+  },
+  EmployeeProfileScreen: {
+    screen: EmployeeProfileScreen,
+    navigationOptions: {
+      headerShown: false,
+    },
+  },
+},
+{
+  initialRouteName: "SplashScreen"
 });
 
 export default createAppContainer(App);

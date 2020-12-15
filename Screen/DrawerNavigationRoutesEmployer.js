@@ -9,7 +9,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 
 //Import External Screens
-import SettingsScreen from './drawerScreens/SettingsScreen';
+import EmployeeProfileScreen from './EmployeeProfileScreen';
 import CustomSidebarMenu from './Components/CustomSidebarMenu';
 import NavigationDrawerHeader from './Components/NavigationDrawerHeader';
 
@@ -30,9 +30,9 @@ const FirstActivity_StackNavigator = createStackNavigator({
 
 const SecondActivity_StackNavigator = createStackNavigator({
   First: {
-    screen: SettingsScreen,
+    screen: EmployeeProfileScreen,
     navigationOptions: ({ navigation }) => ({
-      title: 'Setting',
+      title: 'Profile',
       headerLeft: () => <NavigationDrawerHeader navigationProps={navigation} />,
       headerStyle: {
         backgroundColor: '#eee',
@@ -50,10 +50,10 @@ const DrawerNavigationRoutesEmployer = createDrawerNavigator(
         drawerLabel: 'Home',
       },
     },
-    SettingsScreen: {
+    EmployeeProfileScreen: {
       screen: SecondActivity_StackNavigator,
       navigationOptions: {
-        drawerLabel: 'Setting',
+        drawerLabel: 'Profile',
       },
     },
   },

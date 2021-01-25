@@ -24,7 +24,8 @@ export const RegistrationModalRecord = {
       key: "password",
       name: "Password",
       type: "text-box",
-      isRequired: true
+      isRequired: true,
+      isSecured: true
     },
     {
       key: "mobileNumber",

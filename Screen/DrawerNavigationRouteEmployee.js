@@ -16,7 +16,7 @@ const FirstActivity_StackNavigator = createStackNavigator({
   First: {
     screen: EmployeeProfileScreen,
     navigationOptions: ({ navigation }) => ({
-      title: 'Home',
+      title: 'Profile',
       headerLeft: () => <NavigationDrawerHeader navigationProps={navigation} />,
       headerStyle: {
         backgroundColor: '#eee',
@@ -31,7 +31,7 @@ const DrawerNavigatorRoutesEmployee = createDrawerNavigator(
     HomeScreen: {
       screen: FirstActivity_StackNavigator,
       navigationOptions: {
-        drawerLabel: 'Home',
+        drawerLabel: 'Profile',
       },
     }
   },

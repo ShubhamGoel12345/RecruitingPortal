@@ -31,6 +31,7 @@ export const createField = (field, onChange, defaultValue) => {
             returnKeyType="next"
             onSubmitEditing={() => { }}
             blurOnSubmit={false}
+            secureTextEntry={field.isSecured}
           />
         </View>
 
@@ -76,6 +77,12 @@ export const createField = (field, onChange, defaultValue) => {
             }}
             dropDownStyle={{ backgroundColor: '#fafafa' }}
             onChangeItem={item => onChange(field.key, item.value)}
+            labelStyle={{
+              color: 'black'
+            }}
+            placeholderStyle={{
+              color: "gray",
+            }}
           />
         </View>
       )
@@ -93,6 +100,12 @@ export const createField = (field, onChange, defaultValue) => {
             containerStyle={{ flex: 1, height: 45 }}
             itemStyle={{
               justifyContent: 'flex-start'
+            }}
+            labelStyle={{
+              color: 'black'
+            }}
+            placeholderStyle={{
+              color: "gray"
             }}
             onChangeItem={item => onChange(field.key, item)
             }
@@ -115,7 +128,7 @@ export const styles = StyleSheet.create({
   },
   inputStyle: {
     flex: 1,
-    color: "gray",
+    color: "black",
     paddingLeft: 15,
     paddingRight: 15,
     borderWidth: 1,

@@ -7,26 +7,21 @@ import React, { useState } from 'react';
 //Import all required component
 import {
   StyleSheet,
-  TextInput,
   View,
   Text,
-  Image,
   KeyboardAvoidingView,
-  Keyboard,
-  TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import Loader from './Components/loader';
-import { Avatar, Accessory } from 'react-native-elements';
+import { Avatar } from 'react-native-elements';
 
 const ViewProfileScreen = props => {
   let data = props.navigation.state.params;
 
-  let [userFirstName, setUserFirstName] = useState(data.firstName || '');
-  let [userLastName, setUserLastName] = useState(data.lastName || '');
-  let [userEmail, setUserEmail] = useState(data.emailAddress || '');
-  let [userMobile, setUserMobile] = useState(data.mobileNumber || '');
-  let [userSkills, setUserSkills] = useState(data.skills || []);
+  let [userFirstName] = useState(data.firstName || '');
+  let [userLastName] = useState(data.lastName || '');
+  let [userEmail] = useState(data.emailAddress || '');
+  let [userMobile] = useState(data.mobileNumber || '');
+  let [userSkills] = useState(data.skills || []);
 
   const viewProfile = () => {
     return(

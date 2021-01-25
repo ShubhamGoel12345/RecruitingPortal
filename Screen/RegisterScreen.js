@@ -5,7 +5,6 @@ import _ from "lodash";
 
 import {
   StyleSheet,
-  TextInput,
   View,
   Text,
   Image,
@@ -21,7 +20,6 @@ import Loader from "./Components/loader";
 const RegisterScreen = (props) => {
   let [loading, setLoading] = useState(false);
   let [errortext, setErrortext] = useState("");
-  let [isRegistraionSuccess, setIsRegistraionSuccess] = useState(false);
 
   let [userPayload, setUserPayload] = useState({});
 
@@ -62,7 +60,7 @@ const RegisterScreen = (props) => {
         console.log(res);
         setLoading(false);
         if (res.status === 200) {
-          setIsRegistraionSuccess(true);
+          props.navigation.navigate("Auth")
           console.log("Registration Successful. Please Login to proceed");
         } else {
           setErrortext("Registration Unsuccessful");
@@ -75,25 +73,6 @@ const RegisterScreen = (props) => {
       });
   };
 
-  if (isRegistraionSuccess) {
-    return (
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: "#fff",
-        }}
-      >
-        <Text style={styles.successTextStyle}>{"Registration"} {"Successful"}</Text>
-        <TouchableOpacity
-          style={styles.buttonStyle}
-          activeOpacity={0.5}
-          onPress={() => props.navigation.navigate("LoginScreen")}
-        >
-          <Text style={styles.buttonTextStyle}>Login Now</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
   return (
     <View style={{ flex: 1, backgroundColor: "#fff" }}>
       <Loader loading={loading} />

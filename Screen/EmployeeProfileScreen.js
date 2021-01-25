@@ -115,7 +115,6 @@ const EmployeeProfileScreen = () => {
               containerStyle={{ marginLeft: 10, marginTop: 60 }}
               size={200}
               rounded
-              // onPress={() => console.log("Works!")}
               source={require("../Image/aboutreact.png")}
             ></Avatar>
           </View>
@@ -186,7 +185,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginLeft: 35,
     marginRight: 35,
-    marginTop: 50,
+    marginTop: 120,
     marginBottom: 20,
   },
   buttonTextStyle: {

@@ -148,7 +148,7 @@ export const styles = StyleSheet.create({
   },
   viewStyle: {
     flex: 1,
-    color: 'gray',
+    color: 'black',
     flexDirection: 'column',
     paddingLeft: 5,
     paddingRight: 5,

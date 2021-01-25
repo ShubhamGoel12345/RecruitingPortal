@@ -10,7 +10,7 @@ import {
 import { Requests } from "../utils/request";
 import Loader from "./Components/loader";
 import { Avatar } from "react-native-elements";
-import { EmployeeProfileViewRecord, EmployeeProfileEditRecord } from "./state/employeeProfileRecordType";
+import { EmployeeProfileViewRecord, EmployeeProfileEditRecord } from "./state/profileRecordType";
 import { createField } from "./Components/formField";
 
 const EmployeeProfileScreen = () => {
@@ -33,7 +33,7 @@ const EmployeeProfileScreen = () => {
 
   const onChange = (key, data) => {
     let payload = Object.assign({}, userData);
-    payload[key] = data 
+    payload[key] = data
     setUserData(payload);
   };
 
@@ -82,13 +82,12 @@ const EmployeeProfileScreen = () => {
               containerStyle={{ marginLeft: 10, marginTop: 40 }}
               size={200}
               rounded
-              onPress={() => console.log("Works!")}
               source={require("../Image/aboutreact.png")}
             ></Avatar>
           </View>
           <KeyboardAvoidingView enabled>
             {EmployeeProfileViewRecord.fields.map((field) =>
-              createField(field, () => {}, userData)
+              createField(field, () => { }, userData)
             )}
             {errortext != "" ? (
               <Text style={styles.errorTextStyle}> {errortext} </Text>
@@ -116,7 +115,7 @@ const EmployeeProfileScreen = () => {
               containerStyle={{ marginLeft: 10, marginTop: 60 }}
               size={200}
               rounded
-              onPress={() => console.log("Works!")}
+              // onPress={() => console.log("Works!")}
               source={require("../Image/aboutreact.png")}
             ></Avatar>
           </View>

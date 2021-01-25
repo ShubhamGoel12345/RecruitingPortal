@@ -57,3 +57,52 @@ export const EmployeeProfileEditRecord = {
     },
   ],
 };  
+
+
+export const EmployerProfileViewRecord = {
+  name: "Profile view",
+  fields: [
+    {
+      key: "firstName",
+      name: "First name",
+      type: "view-field",
+    },
+    {
+      key: "lastName",
+      name: "Last name",
+      type: "view-field",
+    },
+    {
+      key: "emailAddress",
+      name: "Email",
+      type: "view-field",
+    },
+    {
+      key: "mobileNumber",
+      name: "Mobile Number",
+      type: "view-field",
+    }
+  ],
+};
+
+export const EmployerProfileEditRecord = {
+  name: "Profile view",
+  fields: [
+    {
+      key: "firstName",
+      name: "First name",
+      type: "prefilled-text-box",
+    },
+    {
+      key: "lastName",
+      name: "Last name",
+      type: "prefilled-text-box",
+    },
+    // {
+    //   key: "companyName",
+    //   name: "Company Name",
+    //   type: "prefilled-text-box",
+    //   isRequired: true,
+    // },
+  ],
+};  
